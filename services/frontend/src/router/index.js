@@ -7,12 +7,27 @@ import ProfileView from '@/views/ProfileView.vue';
 import NoteView from '@/views/NoteView.vue';
 import EditNoteView from '@/views/EditNoteView.vue';
 
+import Search from '@/views/Search.vue';
+import List from '@/views/List.vue';
+
 const routes = [
   {
     path: '/',
     name: 'HomeView',
     component: HomeView
   },
+  //add
+  {
+    path: '/search',
+    name: 'Search',
+    component: Search
+  },
+  {
+    path: '/list',
+    name: 'List',
+    component: List
+  },
+  //add
   {
     path: '/register',
     name: 'RegisterView',
