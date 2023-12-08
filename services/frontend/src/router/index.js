@@ -7,12 +7,11 @@ import ProfileView from '@/views/ProfileView.vue';
 import NoteView from '@/views/NoteView.vue';
 import EditNoteView from '@/views/EditNoteView.vue';
 
-
 const routes = [
   {
     path: '/',
-    name: "HomeView",
-    component: HomeView,
+    name: 'HomeView',
+    component: HomeView
   },
   {
     path: '/register',

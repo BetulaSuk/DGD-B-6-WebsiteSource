@@ -9,7 +9,7 @@ import store from './store';
 import ViewUIPlus from 'view-ui-plus'
 import 'view-ui-plus/dist/styles/viewuiplus.css'
 
-const app = createApp(App);
+const app = createApp(App).use(router).use(store);
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = 'http://localhost:82/';  // the FastAPI backend
