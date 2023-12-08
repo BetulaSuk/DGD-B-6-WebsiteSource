@@ -6,6 +6,9 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
+import ViewUIPlus from 'view-ui-plus'
+import 'view-ui-plus/dist/styles/viewuiplus.css'
+
 const app = createApp(App);
 
 axios.defaults.withCredentials = true;
@@ -13,4 +16,7 @@ axios.defaults.baseURL = 'http://localhost:82/';  // the FastAPI backend
 
 app.use(router);
 app.use(store);
+
+app.use(ViewUIPlus)
+
 app.mount("#app");

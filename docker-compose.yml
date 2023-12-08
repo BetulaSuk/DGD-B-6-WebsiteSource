@@ -5,7 +5,7 @@ services:
   backend:
     build: ./services/backend
     ports:
-      - 82:82
+      - "82:82"
     environment:
       - DATABASE_URL=postgres://hello_fastapi:hello_fastapi@db:5432/hello_fastapi_dev
       - SECRET_KEY=09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
@@ -21,7 +21,7 @@ services:
       - './services/frontend:/app'
       - '/app/node_modules'
     ports:
-      - 8080:8080
+      - "8080:8080"
 
   db:
     image: postgres:15.1

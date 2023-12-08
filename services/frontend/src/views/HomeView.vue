@@ -1,28 +1,20 @@
 <template>
   <section>
-    <p>This site is built with FastAPI and Vue.</p>
-
-    <div v-if="isLoggedIn" id="logout">
-      <p id="logout">Click <a href="/dashboard">here</a> to view all notes.</p>
-    </div>
-    <p v-else>
-      <span><a href="/register">Register</a></span>
-      <span> or </span>
-      <span><a href="/login">Log In</a></span>
-    </p>
+      <b-button @click="clickMe">Click Me</b-button>
   </section>
+  <Space direction="vertical" size="large" type="flex">
+      <Input search placeholder="Enter something..." />
+      <Input search enter-button placeholder="Enter something..." />
+      <Input search enter-button="Search" placeholder="Enter something..." />
+  </Space>
 </template>
 
 <script>
-
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'HomeView',
-  computed : {
-    isLoggedIn: function() {
-      return this.$store.getters.isAuthenticated;
-    }
-  },
-});
+  export default {
+      methods: {
+          clickMe() {
+              this.$buefy.notification.open('Clicked!!')
+          }
+      }
+  }
 </script>
