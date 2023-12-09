@@ -9,6 +9,7 @@ import EditNoteView from '@/views/EditNoteView.vue';
 
 import Search from '@/views/Search.vue';
 import List from '@/views/List.vue';
+import store from '@/store'; // NEW
 
 const routes = [
   {
@@ -70,5 +71,17 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+router.beforeEach((to, _, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isAuthenticated) {
+      next();
+      return;
+    }
+    next('/login');
+  } else {
+    next();
+  }
+});
 
 export default router

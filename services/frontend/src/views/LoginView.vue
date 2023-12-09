@@ -3,6 +3,7 @@
     <h1>
       Log In
     </h1>
+    <br/><br/>
     <form @submit.prevent="submit">
       <div class="mb-3">
         <label for="username" class="form-label">Username:</label>

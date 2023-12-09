@@ -13,12 +13,13 @@
       <span> or </span>
       <span><a href="/list">Some interesting pages</a></span>
     </p>
+    <br>
   </section>
 
   <Carousel v-model="value" loop>
         <CarouselItem>
             <div class="demo-carousel">
-              <Grid center square>
+              <Grid center square hover>
                 <GridItem>Something1</GridItem>
                 <GridItem>Something2</GridItem>
                 <GridItem>Whatever</GridItem>
@@ -27,20 +28,29 @@
         </CarouselItem>
         <CarouselItem>
             <div class="demo-carousel">
-              <Grid center square>
+              <Grid center square hover>
                 <GridItem>Something1</GridItem>
                 <GridItem>Something2</GridItem>
+                <GridItem>Whatever</GridItem>
               </Grid>
             </div>
         </CarouselItem>
         <CarouselItem>
             <div class="demo-carousel">
-              <h1> 11111 </h1>
+              <Grid center square hover>
+                <GridItem>Something1</GridItem>
+                <GridItem>Something2</GridItem>
+                <GridItem>Whatever</GridItem>
+              </Grid>
             </div>
         </CarouselItem>
         <CarouselItem>
             <div class="demo-carousel">
-              <h1> 11111 </h1>
+              <Grid center square hover>
+                <GridItem>Something1</GridItem>
+                <GridItem>Something2</GridItem>
+                <GridItem>Whatever</GridItem>
+              </Grid>
             </div>
         </CarouselItem>
   </Carousel>

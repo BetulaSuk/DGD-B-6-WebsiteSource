@@ -39,7 +39,7 @@
               <ul>
                 <li><strong>Note Title:</strong> {{ note.title }}</li>
                 <li><strong>Author:</strong> {{ note.author.username }}</li>
-                <li><router-link :to="{name: 'Note', params:{id: note.id}}">View</router-link></li>
+                <li><router-link :to="{name: 'NoteView', params:{id: note.id}}">View</router-link></li>
               </ul>
             </div>
           </div>
