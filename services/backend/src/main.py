@@ -32,7 +32,6 @@ app.include_router(notes.router)
 
 register_tortoise(app, config=TORTOISE_ORM, generate_schemas=False)
 
-
 @app.get("/")
 def home():
     return "Hello, World!"

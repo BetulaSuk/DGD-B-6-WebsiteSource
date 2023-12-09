@@ -10,8 +10,8 @@
     <br>
     <br>
     <Space direction="vertical" size="large" type="flex">
-        <Input search enter-button placeholder="Enter something..." />
-    </Space>    
+        <Input search enter-button clearable placeholder="Enter something..." />
+    </Space>
 </template>
 
 

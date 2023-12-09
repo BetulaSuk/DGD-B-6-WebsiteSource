@@ -4,7 +4,7 @@ from passlib.context import CryptContext
 from tortoise.exceptions import DoesNotExist, IntegrityError
 
 from src.database.models import Users
-from src.schemas.token import Status  # NEW
+from src.schemas.token import Status
 from src.schemas.users import UserOutSchema
 
 

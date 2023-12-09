@@ -1,7 +1,24 @@
+<style>
+
+.words {
+  font-family:'Courier New', Courier, monospace;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.demo-carousel {
+  background-color: azure;
+  font-size: large;
+}
+
+
+</style>
+
 <template>
-  <section>
-    <p>This site is built with FastAPI and Vue.</p>
-    <p>What should we put here?</p>
+  <section class="words">
+      <p>This site is built with FastAPI and Vue.</p>
+      <p>What should we put here?</p>
 
     <!--
     <div v-if="isLoggedIn" id="logout">
@@ -13,10 +30,11 @@
       <span> or </span>
       <span><a href="/list">Some interesting pages</a></span>
     </p>
-    <br>
   </section>
 
-  <Carousel v-model="value" loop>
+  <br>
+
+  <Carousel v-model="value" dots="outside">
         <CarouselItem>
             <div class="demo-carousel">
               <Grid center square hover>
@@ -58,16 +76,13 @@
 </template>
 <script>
 
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'HomeView',
-  computed : {
-    isLoggedIn: function() {
-      return this.$store.getters.isAuthenticated;
+export default {
+  data () {
+    return {
+      value: 0
     }
-  },
-});
+  }
+}
 
 
 </script>

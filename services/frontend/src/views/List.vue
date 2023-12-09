@@ -44,15 +44,15 @@
             <Sider breakpoint="md" collapsible :collapsed-width="78" v-model="isCollapsed">
                 <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
                     <MenuItem name="1-1">
-                        <Icon type="ios-navigate"></Icon>
+                        <Icon type="ios-document-outline"></Icon>
                         <span>Paper 1</span>
                     </MenuItem>
                     <MenuItem name="1-2">
-                        <Icon type="ios-search"></Icon>
+                        <Icon type="ios-document-outline"></Icon>
                         <span>Paper 2</span>
                     </MenuItem>
                     <MenuItem name="1-3">
-                        <Icon type="ios-settings"></Icon>
+                        <Icon type="ios-document-outline"></Icon>
                         <span>Paper 3</span>
                     </MenuItem>
                 </Menu>
@@ -60,9 +60,11 @@
             </Sider>
             <Layout>
                 <Header class="layout-header-bar"></Header>
-                <Content :style="{margin: '20px', background: '#fff', minHeight: '220px'}">
-                    Content
-                </Content>
+                <Scroll>
+                    <Card dis-hover v-for="(item, index) in list" :key="index" style="margin: 32px 0">
+                        Content {{ item }}
+                    </Card>
+                </Scroll>
             </Layout>
         </Layout>
     </div>
@@ -72,7 +74,8 @@
     export default {
         data () {
             return {
-                isCollapsed: false
+                isCollapsed: false,
+                list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
             };
         },
         computed: {

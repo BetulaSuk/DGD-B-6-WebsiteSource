@@ -1,10 +1,14 @@
 <template>
-  <div id="app">
-    <NavBar />
+  <div id="app" class="wrapper">
+    <div class="header">
+      <NavBar />
+    </div>
     <div class="main container">
       <router-view/>
     </div>
-    <GlobalFooter />
+    <div class="footer">
+      <GlobalFooter />
+    </div>
   </div>
 </template>
 
@@ -29,8 +33,30 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
 }
 .main {
   padding-top: 5em;
+  flex: 1;
 }
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.header {
+  flex: 0;
+}
+.footer {
+  flex: 0;
+}
+
 </style>
