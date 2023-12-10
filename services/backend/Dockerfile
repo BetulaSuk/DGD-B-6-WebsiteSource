@@ -7,8 +7,8 @@ ENV PATH="${PATH}:/root/.local/bin"
 ENV PYTHONPATH=.
 
 COPY requirements.txt .
-RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip --timeout=100
-RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt --timeout=100
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip --timeout=100 \
+    && pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt --timeout=100
 
 COPY migrations .
 COPY pyproject.toml .
