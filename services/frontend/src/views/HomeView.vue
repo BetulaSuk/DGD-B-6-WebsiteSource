@@ -28,7 +28,7 @@
     <p>
       <span><a href="/search">Search page</a></span>
       <span> or </span>
-      <span><a href="/list">Some interesting pages</a></span>
+      <span><a href="/list">List page</a></span>
     </p>
   </section>
 
