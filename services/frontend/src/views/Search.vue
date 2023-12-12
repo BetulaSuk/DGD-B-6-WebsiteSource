@@ -564,13 +564,13 @@ a,
 			<div ref="searchRef" class="search">
 				<button @click="close_button" id="btn-search-close" class="btn btn--search-close" aria-label="Close search form"><svg class="icon icon--cross"><use xlink:href="#icon-cross"></use></svg></button>
 				<!--这里一定要加上onsubmit，不然form内部的input默认回车触发提交和刷新-->
-				<form class="search__form" action="" onsubmit="return false;">
+				<form ref="formRef" class="search__form" action="" onsubmit="return false;">
 					<input ref="inputRef" id="test" class="search__input" name="search" type="text" placeholder="Find..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" >
 						
 					<!--没有这个隐形的button，无法触发回车判定-->
 					<button @click="search_button" id="search__button" class="btn" type="submit"></button>
 
-					<span id="history" class="search__info">History: </span>
+					<span ref="historyRef" id="history" class="search__info">History: </span>
 				</form>
 			</div><!-- /search -->
 		</div><!-- /page -->
@@ -581,7 +581,7 @@ a,
 <script>
 
 import { defineComponent } from 'vue';
-import { mapActions } from 'vuex';
+//import { mapActions } from 'vuex';
 import { ref } from 'vue';
 
 export default defineComponent({
@@ -589,12 +589,11 @@ export default defineComponent({
     data() {
         return {
             form: {
-                searchText: '',
+                search_input: '',
             }
         };
     },
     methods: {
-        //TODO
         change_button() {
 			//替换图片
 			this.$refs.bodyRef.classList.add('js');
@@ -604,13 +603,37 @@ export default defineComponent({
 			this.$refs.pageRef.classList.add('page--move');
 			this.$refs.searchRef.classList.add('search--open');
 			//在指定时间(1200ms)后调用函数
-			//TODO
 			//setTimeout(function() {
 				//设置焦点(搜索光标...?)
 				//this.$refs.inputRef.focus();
 			//}, 1200);
 		},
-        search_button() {},
+        async search_button() {
+			const searchTerm = this.$refs.inputRef.value;
+			console.log(searchTerm);
+			this.$refs.inputRef.value = '';
+
+			//TODO
+			const response = await fetch('/api/search', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ term: searchTerm }),
+			});
+			const result = await response.json();
+
+			// Display the result or handle it as needed
+			console.log(result);
+
+			//加载历史
+			this.$refs.historyRef.innerHTML = 'History: ';
+        	history.forEach(item => {
+            	const li = document.createElement('li');
+            	li.textContent = item;
+            	searchHistoryList.appendChild(li);
+        	});
+		},
         close_button() {
 			//替换图片
 			//this.$refs.mainRef.style.backgroundImage = "url:require(../assets/bg_main.svg)";
@@ -620,16 +643,16 @@ export default defineComponent({
 			this.$refs.searchRef.classList.remove('search--open');
 			//失去焦点
 			//inputSearch.blur();
-			//inputSearch.value = '';
+			this.$refs.inputRef.value = '';
 		},
 
-        ...mapActions(['search']),
+		/*...mapActions(['search']),
         async submit() {
             const Search = new FormData();
             Search.append('searchText', this.form.searchText);
             await this.search(Search);
             this.$router.push('/');
-        }
+        }*/
     }
 });
 </script>
