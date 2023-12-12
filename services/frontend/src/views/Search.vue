@@ -9,9 +9,12 @@
     <br>
     <br>
     <br>
+    <form @submit.prevent="submit">
     <Space direction="vertical" size="large" type="flex">
-        <Input type="text" name="searchText" v-model="searchText" search enter-button clearable placeholder="Enter something..." />
+        <Input type="text" name="search_text" v-model="searchText" search enter-button  clearable placeholder="Enter something..." />
+        <button @click="submit()">search</button>
     </Space>
+    </form>
 </template>
 
 
@@ -23,14 +26,16 @@ export default defineComponent({
     name: 'Search',
     data() {
         return {
-            searchText: '',
+            form: {
+                searchText: '',
+            }
         };
     },
     methods: {
-        ...mapActions('search', ['search']),
+        ...mapActions(['search']),
         async submit() {
             const Search = new FormData();
-            Search.append('searchText', this.searchText);
+            Search.append('searchText', this.form.searchText);
             await this.search(Search);
             this.$router.push('/');
         }

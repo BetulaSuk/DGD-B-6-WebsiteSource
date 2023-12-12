@@ -7,7 +7,7 @@ services:
     ports:
       - "82:82"
     environment:
-      - DATABASE_URL=mysql://dgd:23825@db:3306/dgd_db
+      - DATABASE_URL=mysql://dgd:23825@db:3307/dgd_db
       - SECRET_KEY=09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
     volumes:
       - ./services/backend:/app
@@ -26,7 +26,7 @@ services:
   db:
     image: mysql:8.2.0
     ports:
-      - "3306:3306"
+      - "3307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=23825
       - MYSQL_DATABASE=dgd_db

@@ -32,7 +32,7 @@ const actions = {
   async logOut({commit}) {
     let user = null;
     commit('logout', user);
-  },
+  }
 };
 
 const mutations = {
