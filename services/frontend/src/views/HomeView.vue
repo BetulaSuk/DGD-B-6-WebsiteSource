@@ -32,8 +32,6 @@
     </p>
   </section>
 
-  <br>
-
   <Carousel v-model="value" dots="outside">
         <CarouselItem>
             <div class="demo-carousel">

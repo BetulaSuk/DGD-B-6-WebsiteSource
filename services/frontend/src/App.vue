@@ -3,7 +3,7 @@
     <div class="header">
       <NavBar />
     </div>
-    <div class="main container">
+    <div class="main">
       <router-view/>
     </div>
     <div class="footer">
@@ -42,7 +42,7 @@ export default {
 
 }
 .main {
-  padding-top: 5em;
+  padding-top: 1em;
   flex: 1;
 }
 
