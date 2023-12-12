@@ -522,7 +522,7 @@ a,
 
 
 <template>
-    <body ref="bodyRef" class="demo">
+    <body ref="bodyRef" class="demo js">
 		<!--可缩放矢量图形-->
 		<svg class="hidden">
 			<defs>
@@ -582,7 +582,7 @@ a,
 
 import { defineComponent } from 'vue';
 //import { mapActions } from 'vuex';
-import { ref } from 'vue';
+//import { ref } from 'vue';
 
 export default defineComponent({
     name: 'Search',
@@ -596,7 +596,7 @@ export default defineComponent({
     methods: {
         change_button() {
 			//替换图片
-			this.$refs.bodyRef.classList.add('js');
+			//this.$refs.bodyRef.classList.add('js');
 			//this.$refs.mainRef.style.backgroundImage = "url:require(../assets/bg_original.svg)";
 
 			//添加新的类名
@@ -627,6 +627,7 @@ export default defineComponent({
 			console.log(result);
 
 			//加载历史
+			//TODO
 			this.$refs.historyRef.innerHTML = 'History: ';
         	history.forEach(item => {
             	const li = document.createElement('li');

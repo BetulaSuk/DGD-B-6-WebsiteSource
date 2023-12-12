@@ -15,12 +15,7 @@
     text-align: center;
 }
 
-.demo-drawer-profile{
-        font-size: 14px;
-    }
-.demo-drawer-profile .ivu-col{
-    margin-bottom: 12px;
-}
+
 </style>
 
 
@@ -30,29 +25,39 @@
         <p class="words">The Results:</p>
         <Grid class="grid" col=4 square hover center>
             <GridItem>
-                <Button @click="value = true" type="primary">View Profile</Button>
-                <Drawer :closable="false" width="640" v-model="value">
-                    <p class="words">Some information</p>
+                <Button @click="value1 = true" type="primary">View information1</Button>
+                <Drawer :closable="false" width="640" v-model="value1">
+                    <p class="words">Some information1</p>
                 </Drawer>
             </GridItem>
-            <GridItem>2</GridItem>
-            <GridItem>3</GridItem>
+            <GridItem>
+                <Button @click="value2 = true" type="primary">View information2</Button>
+                <Drawer :closable="false" width="640" v-model="value2">
+                    <p class="words">Some information2</p>
+                </Drawer>
+            </GridItem>
+            <GridItem>
+                <!--TODO-->
+                <ListComponent></ListComponent>
+            </GridItem>
             <GridItem>4</GridItem>
         </Grid>
         <div style="display: flex">
             <div style="flex: 1"></div>
-            <Page :total="x" show-total />
+            <Page :total="10" show-total />
             <div style="flex: 1"></div>
         </div>
     </div>
 </template>
 
 <script>
-    export default {
-        data () {
-            return {
-                value: false,
-            };
-        },
-    }
+import ListComponent from './ListComponent.vue'
+export default {
+    data() {
+        return {
+            value1: false,
+            value2: false,
+        };
+    },
+}
 </script>
