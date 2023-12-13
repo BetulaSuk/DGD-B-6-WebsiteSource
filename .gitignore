@@ -5,6 +5,9 @@ services/frontend/node_modules
 # pycache files
 *.pyc
 
+# pdf files
+*.pdf
+
 # local env files
 .env.local
 .env.*.local

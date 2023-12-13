@@ -35,5 +35,18 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
+  elasticsearch:
+    image: elasticsearch:7.17.1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms2G -Xmx4G"
+    volumes:
+      - /home/bwie/soft/elasticsearch/config/elasticsearch.yml:/services/elasticsearch/config/elasticsearch.yml
+      - /home/bwie/soft/elasticsearch/data:/services/elasticsearch/data
+      - /home/bwie/soft/elasticsearch/plugins:/services/elasticsearch/plugins
+
 volumes:
   mysql_data:

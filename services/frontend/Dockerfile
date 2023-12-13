@@ -4,7 +4,7 @@ WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-RUN npm install @vue/cli -g
+RUN npm config set registry https://registry.npmmirror.com && npm install @vue/cli -g
 
 COPY package.json .
 COPY package-lock.json .

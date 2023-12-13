@@ -5,7 +5,7 @@ from tortoise import Tortoise
 from src.database.register import register_tortoise
 from src.database.config import TORTOISE_ORM
 
-import searcher.searcher
+# import searcher.searcher
 
 
 # enable schemas to read relationship between models

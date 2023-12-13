@@ -61,7 +61,6 @@ class Searcher:
 # 尝试搜索并输出结果
 if __name__ == '__main__':
     se = Searcher()
-    # result = se.search('keywords','brazil')
-    l = se.get_info('keywords','brazil')
-    for i in l:
-        print(i)
+    #l = se.get_info('keywords','brazil')
+    #for i in l:
+    #    print(i)
