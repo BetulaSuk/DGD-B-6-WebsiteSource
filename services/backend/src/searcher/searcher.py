@@ -8,7 +8,7 @@ def json_print(string):
 
 class Searcher:
     def __init__(self) -> None:
-        self.es = Elasticsearch()
+        self.es = Elasticsearch([{'host':'39.105.206.55','port':9200}]) #如果连本地的elasticsearch就把括号里的内容去掉
 
     def search(self, method, key):
         #若输入的关键词中有空格则自动进行短语查询
@@ -61,6 +61,6 @@ class Searcher:
 # 尝试搜索并输出结果
 if __name__ == '__main__':
     se = Searcher()
-    #l = se.get_info('keywords','brazil')
-    #for i in l:
-    #    print(i)
+    l = se.get_info('keywords','brazil')
+    for i in l:
+       print(i)
