@@ -1,18 +1,26 @@
 from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from fastapi.security import OAuth2PasswordRequestForm
 
 from tortoise.contrib.fastapi import HTTPNotFoundError
 
+from src.searcher.searcher import Searcher
 
 router = APIRouter()
 
+@router.post(
+    "/search/",
+    response_class=JSONResponse
+)
+async def es_search(method: str = "title", keyword: str = ""):
+    es_searcher = Searcher()
+    result = es_searcher.get_info(method, keyword)
+    return JSONResponse(content=result)
+
 search_history = list()
 
-@router.post("/api/search")
+@router.post("/search/history")
 async def get_search_text(term: dict):
     search_term = term.get("term", "")
     if search_term:

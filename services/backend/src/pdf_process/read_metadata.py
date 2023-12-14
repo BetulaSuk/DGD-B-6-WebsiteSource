@@ -13,6 +13,12 @@ def readin_pdf_metadata(app):
                              password='dgd23825',
                              db='dgd_db',
                              charset='utf8')
+        async with conn.cursor(cursor=DictCursor) as cs:
+            await cs.execute('SELECT EXISTS(SELECT 1 FROM pdfdata);')
+            is_exist = await cs.fetchone()
+            if (is_exist == 1):
+                return
+
         with open("./data/100_PDF_MetaData.json", encoding='utf8') as metadata_file:
             data = json.load(metadata_file)
             data_lst = []

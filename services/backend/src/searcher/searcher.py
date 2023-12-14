@@ -1,6 +1,8 @@
 from elasticsearch import Elasticsearch
 import json
 
+from src.searcher.init_es import es_config
+
 # json格式化显示函数
 def json_print(string):
     print(json.dumps(string, sort_keys=True, indent=4, separators=(',', ':')))
@@ -8,7 +10,7 @@ def json_print(string):
 
 class Searcher:
     def __init__(self) -> None:
-        self.es = Elasticsearch([{'host':'39.105.206.55','port':9200}]) #如果连本地的elasticsearch就把括号里的内容去掉
+        self.es = Elasticsearch(es_config, verify_certs=False)
 
     def search(self, method, key):
         #若输入的关键词中有空格则自动进行短语查询
@@ -57,10 +59,7 @@ class Searcher:
         return lst
 
 
+# usage:
+# se = Searcher()
+# l = se.get_info('keywords','brazil')
 
-# 尝试搜索并输出结果
-if __name__ == '__main__':
-    se = Searcher()
-    l = se.get_info('keywords','brazil')
-    for i in l:
-       print(i)
