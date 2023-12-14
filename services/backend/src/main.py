@@ -5,6 +5,8 @@ from tortoise import Tortoise
 from src.database.register import register_tortoise
 from src.database.config import TORTOISE_ORM
 
+from src.pdf_process.read_metadata import readin_pdf_metadata
+
 # import searcher.searcher
 
 
@@ -34,6 +36,8 @@ app.include_router(notes.router)
 app.include_router(pdf_data.router)
 
 register_tortoise(app, config=TORTOISE_ORM, generate_schemas=False)
+
+readin_pdf_metadata(app)
 
 @app.get("/")
 def home():
