@@ -1,6 +1,13 @@
-/services/frontend/.DS_Store
+services/frontend/.DS_Store
 services/frontend/node_modules
 /dist
+
+# mysql data
+services/mysql/data/*
+services/mysql/log/*
+
+# db migration files
+services/backend/migrations/*
 
 # pycache files
 *.pyc

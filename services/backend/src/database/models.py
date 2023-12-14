@@ -22,16 +22,17 @@ class Notes(models.Model):
         return f"{self.title}, {self.author} on {self.created_at}"
     
 class PdfData(models.Model):
+    id = fields.IntField(pk=True)
     title = fields.TextField(null=False)
     abstract = fields.TextField(null=True)
     author = fields.TextField(null=True)
-    paper_id = fields.CharField(max_length=255, null=False)
+    paper_id = fields.CharField(max_length=255, unique=True, index=True, null=False)
     date = fields.DatetimeField(null=False)
     conference = fields.CharField(max_length=255, null=True)
     year = fields.IntField(null=True) # width 11
     link = fields.CharField(max_length=255, null=True)
     update_time = fields.DatetimeField(null=True)
-    journal = fields.CharField(max_length=255, null=True)
+    journal = fields.CharField(max_length=255, index=True, null=True)
     issn = fields.CharField(max_length=255, null=True)
     first_page = fields.IntField(null=True)
     last_page = fields.IntField(null=True) # width 11
