@@ -9,12 +9,12 @@ from src.schemas.token import Status
 router = APIRouter()
 
 @router.get(
-    "/pdf",
+    "/pdf/id",
     response_model=PdfOutSchema,
 )
 async def get_pdf(pdf_id: int) -> PdfOutSchema:
     try:
-        return await crud.get_pdf(pdf_id)
+        return await crud.get_by_id(pdf_id)
     except DoesNotExist:
         raise HTTPException(
             status_code=404,

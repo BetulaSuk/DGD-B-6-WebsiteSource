@@ -6,6 +6,7 @@ from src.database.register import register_tortoise
 from src.database.config import TORTOISE_ORM
 
 from src.pdf_process.read_metadata import readin_pdf_metadata
+from src.creeper.initArxiv50 import setup_creeper
 
 # import searcher.searcher
 
@@ -38,6 +39,7 @@ app.include_router(pdf_data.router)
 register_tortoise(app, config=TORTOISE_ORM, generate_schemas=False)
 
 readin_pdf_metadata(app)
+setup_creeper(app)
 
 @app.get("/")
 def home():
