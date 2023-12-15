@@ -2,16 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from tortoise import Tortoise
 
-from src.database.register import register_tortoise
-from src.database.config import TORTOISE_ORM
-
-from src.pdf.pdfdata.read_metadata import readin_pdf_metadata
-from src.pdf.pdfdata.creeper.initArxiv50 import setup_creeper
-
-from src.searcher.init_es import setup_es
-
-# import searcher.searcher
-
 # enable schemas to read relationship between models
 Tortoise.init_models(["src.database.models"], "models")
 
@@ -31,10 +21,12 @@ app.include_router(notes.router)
 app.include_router(pdf_data.router)
 app.include_router(search.router)
 
+from src.database.register import register_tortoise
+from src.database.config import TORTOISE_ORM
+from src.pdf.setup import setup_pdfdata
+
 register_tortoise(app, config=TORTOISE_ORM, generate_schemas=False)
-readin_pdf_metadata(app)
-setup_creeper(app)
-setup_es(app)
+setup_pdfdata(app)
 
 
 @app.get("/")

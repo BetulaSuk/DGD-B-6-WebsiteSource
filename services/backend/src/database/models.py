@@ -20,27 +20,40 @@ class Notes(models.Model):
 
     def __str__(self):
         return f"{self.title}, {self.author} on {self.created_at}"
-    
+
+
 class PdfData(models.Model):
     id = fields.IntField(pk=True)
     title = fields.TextField(null=False)
     abstract = fields.TextField(null=True)
     author = fields.TextField(null=True)
-    paper_id = fields.CharField(max_length=255, unique=True, index=True, null=False)
+    paper_id = fields.CharField(max_length=255,
+                                unique=True,
+                                index=True,
+                                null=False)
     date = fields.DatetimeField(null=False)
     conference = fields.CharField(max_length=255, null=True)
-    year = fields.IntField(null=True) # width 11
+    year = fields.IntField(null=True)  # width 11
     link = fields.CharField(max_length=255, null=True)
     update_time = fields.DatetimeField(null=True)
     journal = fields.CharField(max_length=255, index=True, null=True)
     issn = fields.CharField(max_length=255, null=True)
     first_page = fields.IntField(null=True)
-    last_page = fields.IntField(null=True) # width 11
+    last_page = fields.IntField(null=True)  # width 11
     publisher = fields.CharField(max_length=255, null=True)
     doi = fields.CharField(max_length=255, null=True)
     keywords = fields.CharField(max_length=255, null=True)
 
 
-
-
-    
+class ArxivData(models.Model):
+    id = fields.IntField(pk=True)
+    paper_id = fields.CharField(max_length=255,
+                                unique=True,
+                                index=True,
+                                null=False)
+    title = fields.TextField(null=False)
+    author = fields.TextField(null=True)
+    link = fields.CharField(max_length=255, null=True)
+    abstract = fields.TextField(null=True)
+    keywords = fields.CharField(max_length=255, null=True)
+    last_submit_time = fields.TextField(null=True)

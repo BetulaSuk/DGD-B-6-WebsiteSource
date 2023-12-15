@@ -4,10 +4,13 @@ services/frontend/node_modules
 
 # mysql data
 services/mysql/data/*
-services/mysql/log/*
+
+# elasticsearch data and logs
+services/elasticsearch/data/*
+services/elasticsearch/logs/*
 
 # db migration files
-# services/backend/migrations/*
+services/backend/migrations/*
 
 # pycache files
 */__pycache__

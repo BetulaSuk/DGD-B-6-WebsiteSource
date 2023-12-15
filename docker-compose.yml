@@ -13,8 +13,7 @@ services:
       - ./services/backend:/app
     command: uvicorn src.main:app --reload --host 0.0.0.0 --port 82
     depends_on:
-      - db
-      - elasticsearch
+      - frontend
 
   frontend:
     build: ./services/frontend
@@ -23,6 +22,9 @@ services:
       - './services/frontend/node_modules:/app/node_modules'
     ports:
       - "8080:8080"
+    depends_on:
+      - db
+      - elasticsearch
 
   db:
     image: mysql:8.2.0
@@ -39,14 +41,8 @@ services:
         source: ./services/mysql/data
         target: /var/lib/mysql
       - type: bind
-        source: ./services/mysql/conf.d/
-        target: /etc/mysql/conf.d/
-      - type: bind
         source: ./services/mysql/my.cnf
         target: /etc/mysql/my.cnf
-      - type: bind
-        source: ./services/mysql/log
-        target: /var/log/mysql
 
   elasticsearch:
     image: elasticsearch:7.17.1
@@ -54,10 +50,18 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
+      - ELASTIC_PASSWORD=es23825
       - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms2G -Xmx4G"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx1G"
+      - xpack.security.enabled=false
     volumes:
-      - /home/bwie/soft/elasticsearch/config/elasticsearch.yml:/services/elasticsearch/config/elasticsearch.yml
-      - /home/bwie/soft/elasticsearch/data:/services/elasticsearch/data
-      - /home/bwie/soft/elasticsearch/plugins:/services/elasticsearch/plugins
+      - type: bind
+        source: ./services/elasticsearch/data
+        target: /usr/share/elasticsearch/data
+      - type: bind
+        source: ./services/elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+      - type: bind
+        source: ./services/elasticsearch/logs
+        target: /usr/share/elasticsearch/logs
 

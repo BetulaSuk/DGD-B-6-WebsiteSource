@@ -5,20 +5,31 @@ from fastapi.responses import JSONResponse
 
 from tortoise.contrib.fastapi import HTTPNotFoundError
 
-from src.searcher.searcher import Searcher
+from elasticsearch import NotFoundError
+
+from src.pdf.searcher.searcher import Searcher
 
 router = APIRouter()
 
-@router.post(
-    "/search/",
-    response_class=JSONResponse
-)
-async def es_search(method: str = "title", keyword: str = ""):
-    es_searcher = Searcher()
-    result = es_searcher.get_info(method, keyword)
-    return JSONResponse(content=result)
+
+@router.post("/search/", response_class=JSONResponse)
+async def es_search(data_type: str = "pdfdata",
+                    method: str = "title",
+                    keyword: str = " "):
+    try:
+        if data_type == "pdfdata":
+            es_searcher = Searcher()
+            result = es_searcher.get_info_pdfdata(method, keyword)
+            return JSONResponse(content=result)
+        else:
+            return
+    except NotFoundError:
+        raise HTTPException(status_code=404,
+                            detail=f"No result in {data_type}")
+
 
 search_history = list()
+
 
 @router.post("/search/history")
 async def get_search_text(term: dict):
