@@ -7,9 +7,10 @@ services/mysql/data/*
 services/mysql/log/*
 
 # db migration files
-services/backend/migrations/*
+# services/backend/migrations/*
 
 # pycache files
+*/__pycache__
 *.pyc
 
 # pdf files

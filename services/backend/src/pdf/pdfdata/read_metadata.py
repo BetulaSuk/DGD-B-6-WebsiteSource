@@ -5,6 +5,7 @@ from asyncmy.cursors import DictCursor
 
 
 def readin_pdf_metadata(app):
+
     @app.on_event("startup")
     async def read_into_db():
         conn = await connect(host='db',
@@ -19,7 +20,8 @@ def readin_pdf_metadata(app):
             if (is_exist == 1):
                 return
 
-        with open("./data/100_PDF_MetaData.json", encoding='utf8') as metadata_file:
+        with open("./data/100_PDF_MetaData.json",
+                  encoding='utf8') as metadata_file:
             data = json.load(metadata_file)
             data_lst = []
             for key in data.keys():
@@ -43,7 +45,8 @@ def readin_pdf_metadata(app):
                 sub_lst.append(str(sub_data['keywords']))
                 data_lst.append(sub_lst)
         async with conn.cursor(cursor=DictCursor) as cs:
-            await cs.executemany("""REPLACE INTO pdfdata (
+            await cs.executemany(
+                """REPLACE INTO pdfdata (
                            date,
                            conference,
                            year,
@@ -63,5 +66,3 @@ def readin_pdf_metadata(app):
                            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
                            """, data_lst)
         await conn.commit()
-        
-
