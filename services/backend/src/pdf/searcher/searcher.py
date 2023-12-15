@@ -63,7 +63,7 @@ class Searcher:
 
         for data in data_from_db:
             temp_body = create_body(data)
-            self.es.index(index=PDFDATA_INDEX, id=data[8], body=temp_body)
+            self.es.index(index=PDFDATA_INDEX, id=data["id"], body=temp_body)
 
         Searcher.pdfdata_index_exist = True
         print("<Searcher> created pdfdata index successfully.")
