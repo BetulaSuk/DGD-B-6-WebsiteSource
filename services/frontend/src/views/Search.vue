@@ -565,10 +565,10 @@ a,
 				<button @click="close_button" id="btn-search-close" class="btn btn--search-close" aria-label="Close search form"><svg class="icon icon--cross"><use xlink:href="#icon-cross"></use></svg></button>
 				<!--这里一定要加上onsubmit，不然form内部的input默认回车触发提交和刷新-->
 				<form ref="formRef" class="search__form" action="" onsubmit="return false;">
-					<input ref="inputRef" id="test" class="search__input" name="search" type="text" placeholder="Find..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" >
+					<input ref="inputRef" v-model="searchText" id="test" class="search__input" name="search" type="text" placeholder="Find..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" >
 						
 					<!--没有这个隐形的button，无法触发回车判定-->
-					<button @click="search_button" id="search__button" class="btn" type="submit"></button>
+					<button @click="submit" id="search__button" class="btn" type="submit"></button>
 
 					<span ref="historyRef" id="history" class="search__info">History: </span>
 				</form>
@@ -581,7 +581,7 @@ a,
 <script>
 
 import { defineComponent } from 'vue';
-//import { mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 //import { ref } from 'vue';
 
 export default defineComponent({
@@ -589,7 +589,7 @@ export default defineComponent({
     data() {
         return {
             form: {
-                search_input: '',
+                searchText: '',
             }
         };
     },
@@ -614,12 +614,16 @@ export default defineComponent({
 			this.$refs.inputRef.value = '';
 
 			//TODO
-			const response = await fetch('/api/search', {
+			const response = await fetch('/search', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ term: searchTerm }),
+				body: JSON.stringify({
+					'data_type': 'pdfdata',
+					'method': 'title',
+					'keyword': searchTerm
+				}),
 			});
 			const result = await response.json();
 
@@ -628,12 +632,14 @@ export default defineComponent({
 
 			//加载历史
 			//TODO
+			/*
 			this.$refs.historyRef.innerHTML = 'History: ';
         	history.forEach(item => {
             	const li = document.createElement('li');
             	li.textContent = item;
             	searchHistoryList.appendChild(li);
         	});
+			*/
 		},
         close_button() {
 			//替换图片
@@ -647,13 +653,14 @@ export default defineComponent({
 			this.$refs.inputRef.value = '';
 		},
 
-		/*...mapActions(['search']),
+		...mapActions(['search_by_title']),
         async submit() {
-            const Search = new FormData();
-            Search.append('searchText', this.form.searchText);
-            await this.search(Search);
-            this.$router.push('/');
-        }*/
+            //const Search = new FormData();
+            //Search.append('searchText', this.searchText);
+			console.log(this.searchText);
+            await this.search_by_title(this.searchText);
+            //this.$router.push('/');
+        }
     }
 });
 </script>

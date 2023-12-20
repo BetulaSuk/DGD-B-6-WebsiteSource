@@ -11,7 +11,7 @@ def json_print(string):
 
 
 # 拆分数据
-def create_body(data):
+def create_pdfbody(data):
     dct = {}
     dct["title"] = data["title"]
     dct["paper_id"] = data["paper_id"]
@@ -30,8 +30,25 @@ def create_body(data):
     return dct
 
 
+def create_arxivbody(data):
+    dct = {}
+    dct["title"] = data["title"]
+    dct["paper_id"] = data["paper_id"]
+    dct["link"] = data["link"]
+    dct["abstract"] = data["abstract"]
+    authorList = data["author"][1:-3].split("\"], ")
+    dct["author_name"] = authorList[1][10:].split("\", \"")
+
+    if data["keywords"] == "[]":
+        dct["keywords"] = []
+    else:
+        dct["keywords"] = data["keywords"][2:-2].split("\', \'")
+    return dct
+
+
 class Searcher:
     pdfdata_index_exist = False
+    arxivdata_index_exist = False
 
     def __init__(self, es_instance=None) -> None:
         if not es_instance:
@@ -44,6 +61,9 @@ class Searcher:
         if self.es.indices.exists(index=PDFDATA_INDEX):
             print("<Searcher:init> pdfdata index exist")
             Searcher.pdfdata_index_exist = True
+        if self.es.indices.exists(index=ARXIVDATA_INDEX):
+            print("<Searcher:init> arxivdata index exist")
+            Searcher.arxivdata_index_exist = True
 
     async def setup_pdfdata_index(self, connection):
         # 避免重复创建索引
@@ -62,11 +82,34 @@ class Searcher:
         self.es.indices.create(index=PDFDATA_INDEX, body=PDFDATA_BODY)
 
         for data in data_from_db:
-            temp_body = create_body(data)
+            temp_body = create_pdfbody(data)
             self.es.index(index=PDFDATA_INDEX, id=data["id"], body=temp_body)
 
         Searcher.pdfdata_index_exist = True
         print("<Searcher> created pdfdata index successfully.")
+
+    async def setup_arxivdata_index(self, connection):
+        # 避免重复创建索引
+        if Searcher.arxivdata_index_exist:
+            print("<Searcher> arxivdata index exist, giveup setup arxivdata.")
+            return
+        # 连接数据库, 获取表单数据
+        print("<Searcher> collecting data from db (arxivdata).")
+        async with connection.cursor(cursor=DictCursor) as cs:
+            await cs.execute(
+                'SELECT title, paper_id, link, abstract, author, keywords, id FROM pdfdata'
+            )
+            data_from_db = await cs.fetchall()
+        # 创建索引
+        print("<Searcher> start creating arxivdata index.")
+        self.es.indices.create(index=ARXIVDATA_INDEX, body=ARXIVDATA_BODY)
+
+        for data in data_from_db:
+            temp_body = create_arxivbody(data)
+            self.es.index(index=ARXIVDATA_INDEX, id=data["id"], body=temp_body)
+
+        Searcher.arxivdata_index_exist = True
+        print("<Searcher> created arxivdata index successfully.")
 
     def search_pdfdata(self, method, key: str):
         #若输入的关键词中有空格则自动进行短语查询

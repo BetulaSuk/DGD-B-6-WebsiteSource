@@ -7,11 +7,16 @@ const text = {
 
 
 const actions = {
-    async search({dispatch}, form) {
+    async search_by_title({}, key) {
         console.log('test haha');
         //这里的post还有问题
-        //await axios.post("search", form);
-        console.log(toRaw(form));
+        console.log(key);
+        await axios.post("search", {
+            'data_type': 'pdf_data',
+            'method': 'title',
+            'keyword': key
+        });
+        //console.log(toRaw(key));
         //await dispatch('what');
     }
 }

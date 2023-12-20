@@ -20,7 +20,7 @@ axios.interceptors.response.use(undefined, function (error) {
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         store.dispatch('logOut');
-        return router.push('/login')
+        return router.push('/login');
       }
     }
   });
@@ -28,6 +28,6 @@ axios.interceptors.response.use(undefined, function (error) {
 app.use(router);
 app.use(store);
 
-app.use(ViewUIPlus)
+app.use(ViewUIPlus);
 
 app.mount("#app");

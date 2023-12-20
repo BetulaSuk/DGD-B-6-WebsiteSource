@@ -13,9 +13,9 @@ router = APIRouter()
 
 
 @router.post("/search/", response_class=JSONResponse)
-async def es_search(data_type: str = "pdfdata",
-                    method: str = "title",
-                    keyword: str = " "):
+async def es_search(keyword: str,
+                    data_type: str = "pdfdata",
+                    method: str = "title"):
     try:
         if data_type == "pdfdata":
             es_searcher = Searcher()

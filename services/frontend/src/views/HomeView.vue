@@ -18,13 +18,6 @@
 <template>
   <section class="words">
       <p>This site is built with FastAPI and Vue.</p>
-      <p>What should we put here?</p>
-
-    <!--
-    <div v-if="isLoggedIn" id="logout">
-      <p id="logout">Click <a href="/dashboard">here</a> to view all notes.</p>
-    </div>
-    -->
     <p>
       <span><a href="/search">Search page</a></span>
       <span> or </span>
@@ -32,7 +25,7 @@
     </p>
   </section>
 
-  <Carousel v-model="value" dots="outside">
+  <Carousel v-model="value">
         <CarouselItem>
             <div class="demo-carousel">
               <Grid center square hover>
