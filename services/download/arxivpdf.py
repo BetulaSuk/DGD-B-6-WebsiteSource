@@ -19,6 +19,8 @@ async def download_arxiv():
     async with mysql_conn.cursor(cursor=DictCursor) as cs:
         await cs.execute('SELECT paper_id FROM arxivdata;')
         result = await cs.fetchall()
+    
+    print(result)
 
     for i in result:
         name = '../backend/data/static/Arxiv_PDF/' + i['paper_id'] + '.pdf'
