@@ -19,10 +19,13 @@ def setup_pdfdata(app):
         exist_arxivdata = await check_arxivdata(mysql_conn)
 
         if not exist_pdfdata:
+            print("<pdf setup> Table pdfdata is empty, trying to readin data...")
             await readin_pdfdata(mysql_conn)
         if not exist_arxivdata:
+            print("<pdf setup> Table arxivdata is empty, trying to readin data...")
             await readin_arxivdata(mysql_conn)
 
         if not Searcher.pdfdata_index_exist:
+            print("<pdf setup> No pdfdata index found, trying to setup indices...")
             seacher = Searcher()
             await seacher.setup_pdfdata_index(mysql_conn)

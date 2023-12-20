@@ -65,3 +65,4 @@ async def readin_pdfdata(connection) -> None:
             sub_lst.append(str(sub_data['keywords']))
             data_lst.append(sub_lst)
     await replace_pdfdata(connection, data_lst)
+    print("pdfdata reading complete!")

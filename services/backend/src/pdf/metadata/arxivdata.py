@@ -46,12 +46,20 @@ async def check_arxivdata(connection) -> bool:
 
 
 async def readin_arxivdata(connection) -> None:
-    try:
-        response = requests.get(TARGET_URL, headers=HEADERS)
-        tree = etree.HTML(response.text.encode('utf-8'))
-        temp = tree.xpath('//a[@title="Abstract"]/@href')
-    except requests.exceptions.RequestException:
-        return
+    retry_times = 0
+    while True:
+        try:
+            response = requests.get(TARGET_URL, headers=HEADERS)
+            tree = etree.HTML(response.text.encode('utf-8'))
+            temp = tree.xpath('//a[@title="Abstract"]/@href')
+            break
+        except requests.exceptions.RequestException:
+            print(f"request sent to {TARGET_URL} failed, retrying...({retry_times} times)")
+            if retry_times >= 3:
+                print("<WARNING> give up readin arxivdata, please check your Internet settings.")
+                return
+            else:
+                continue
 
     result = []
     for i in range(0, len(temp)):
@@ -83,3 +91,4 @@ async def readin_arxivdata(connection) -> None:
         arxivdata_lst.append(sub_lst)
 
     await replace_arxivdata(connection, arxivdata_lst)
+    print("arxivdata reading complete!")

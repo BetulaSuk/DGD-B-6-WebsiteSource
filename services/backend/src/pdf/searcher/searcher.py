@@ -59,16 +59,16 @@ class Searcher:
             self.es = es_instance
 
         if self.es.indices.exists(index=PDFDATA_INDEX):
-            print("<Searcher:init> pdfdata index exist")
+            print("<Searcher:init> pdfdata index exists")
             Searcher.pdfdata_index_exist = True
         if self.es.indices.exists(index=ARXIVDATA_INDEX):
-            print("<Searcher:init> arxivdata index exist")
+            print("<Searcher:init> arxivdata index exists")
             Searcher.arxivdata_index_exist = True
 
     async def setup_pdfdata_index(self, connection):
         # 避免重复创建索引
         if Searcher.pdfdata_index_exist:
-            print("<Searcher> pdfdata index exist, giveup setup pdfdata.")
+            print("<Searcher> pdfdata index exist, giveup setting pdfdata.")
             return
         # 连接数据库, 获取表单数据
         print("<Searcher> collecting data from db (pdfdata).")
@@ -78,7 +78,7 @@ class Searcher:
             )
             data_from_db = await cs.fetchall()
         # 创建索引
-        print("<Searcher> start creating pdfdata index.")
+        print("<Searcher> start creating pdfdata indices.")
         self.es.indices.create(index=PDFDATA_INDEX, body=PDFDATA_BODY)
 
         for data in data_from_db:
@@ -86,12 +86,12 @@ class Searcher:
             self.es.index(index=PDFDATA_INDEX, id=data["id"], body=temp_body)
 
         Searcher.pdfdata_index_exist = True
-        print("<Searcher> created pdfdata index successfully.")
+        print("<Searcher> created pdfdata indices successfully.")
 
     async def setup_arxivdata_index(self, connection):
         # 避免重复创建索引
         if Searcher.arxivdata_index_exist:
-            print("<Searcher> arxivdata index exist, giveup setup arxivdata.")
+            print("<Searcher> arxivdata index exists, giveup setting arxivdata.")
             return
         # 连接数据库, 获取表单数据
         print("<Searcher> collecting data from db (arxivdata).")
@@ -101,7 +101,7 @@ class Searcher:
             )
             data_from_db = await cs.fetchall()
         # 创建索引
-        print("<Searcher> start creating arxivdata index.")
+        print("<Searcher> start creating arxivdata indices.")
         self.es.indices.create(index=ARXIVDATA_INDEX, body=ARXIVDATA_BODY)
 
         for data in data_from_db:
@@ -109,7 +109,7 @@ class Searcher:
             self.es.index(index=ARXIVDATA_INDEX, id=data["id"], body=temp_body)
 
         Searcher.arxivdata_index_exist = True
-        print("<Searcher> created arxivdata index successfully.")
+        print("<Searcher> created arxivdata indices successfully.")
 
     def search_pdfdata(self, method, key: str):
         #若输入的关键词中有空格则自动进行短语查询
