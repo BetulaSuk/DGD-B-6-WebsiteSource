@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from tortoise import Tortoise
+from fastapi.staticfiles import StaticFiles
 
 # enable schemas to read relationship between models
 Tortoise.init_models(["src.database.models"], "models")
@@ -8,6 +9,8 @@ Tortoise.init_models(["src.database.models"], "models")
 from src.routes import users, notes, pdf_data, search
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="data/static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,

@@ -582,85 +582,35 @@ a,
 
 import { defineComponent } from 'vue';
 import { mapActions } from 'vuex';
-//import { ref } from 'vue';
 
 export default defineComponent({
     name: 'Search',
     data() {
         return {
-            form: {
-                searchText: '',
-            }
+            searchText: '',
         };
     },
     methods: {
         change_button() {
-			//替换图片
-			//this.$refs.bodyRef.classList.add('js');
-			//this.$refs.mainRef.style.backgroundImage = "url:require(../assets/bg_original.svg)";
-
 			//添加新的类名
 			this.$refs.pageRef.classList.add('page--move');
 			this.$refs.searchRef.classList.add('search--open');
-			//在指定时间(1200ms)后调用函数
-			//setTimeout(function() {
-				//设置焦点(搜索光标...?)
-				//this.$refs.inputRef.focus();
-			//}, 1200);
-		},
-        async search_button() {
-			const searchTerm = this.$refs.inputRef.value;
-			console.log(searchTerm);
-			this.$refs.inputRef.value = '';
-
-			//TODO
-			const response = await fetch('/search', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					'data_type': 'pdfdata',
-					'method': 'title',
-					'keyword': searchTerm
-				}),
-			});
-			const result = await response.json();
-
-			// Display the result or handle it as needed
-			console.log(result);
-
-			//加载历史
-			//TODO
-			/*
-			this.$refs.historyRef.innerHTML = 'History: ';
-        	history.forEach(item => {
-            	const li = document.createElement('li');
-            	li.textContent = item;
-            	searchHistoryList.appendChild(li);
-        	});
-			*/
 		},
         close_button() {
-			//替换图片
-			//this.$refs.mainRef.style.backgroundImage = "url:require(../assets/bg_main.svg)";
-
 			//移除已经存在的类名
 			this.$refs.pageRef.classList.remove('page--move');
 			this.$refs.searchRef.classList.remove('search--open');
-			//失去焦点
-			//inputSearch.blur();
+
 			this.$refs.inputRef.value = '';
 		},
 
 		...mapActions(['search_by_title']),
         async submit() {
-            //const Search = new FormData();
-            //Search.append('searchText', this.searchText);
 			console.log(this.searchText);
             await this.search_by_title(this.searchText);
-            //this.$router.push('/');
-        }
-    }
+			fetch("search")
+			
+        },
+    },
 });
 </script>

@@ -1,31 +1,33 @@
-from datetime import timedelta
-
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
-
-from tortoise.contrib.fastapi import HTTPNotFoundError
 
 from elasticsearch import NotFoundError
 
 from src.pdf.searcher.searcher import Searcher
 
+from pydantic import BaseModel
+
 router = APIRouter()
 
 
+class Item(BaseModel):
+    keyword: str
+    data_type: str
+    method: str
+
+
 @router.post("/search/", response_class=JSONResponse)
-async def es_search(keyword: str,
-                    data_type: str = "pdfdata",
-                    method: str = "title"):
+async def es_search(item: Item):
     try:
-        if data_type == "pdfdata":
+        if item.data_type == "pdf_data":
             es_searcher = Searcher()
-            result = es_searcher.get_info_pdfdata(method, keyword)
+            result = es_searcher.get_info_pdfdata(item.method, item.keyword)
             return JSONResponse(content=result)
         else:
             return
     except NotFoundError:
         raise HTTPException(status_code=404,
-                            detail=f"No result in {data_type}")
+                            detail=f"No result in {item.data_type}")
 
 
 search_history = list()
