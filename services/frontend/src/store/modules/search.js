@@ -2,14 +2,25 @@ import axios from 'axios';
 
 const actions = {
     async search_by_title({}, key) {
-        console.log('test haha');
-        //这里的post还有问题
-        console.log(key);
+        /*
         await axios.post("search", {
             "keyword": key,
             "data_type": "pdf_data",
             "method": "title"
         });
+        */
+        const response = await fetch("http://localhost:82/search", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "keyword": key,
+                "data_type": "pdf_data",
+                "method": "title"
+            })
+        });
+        return response;
     }
 }
 

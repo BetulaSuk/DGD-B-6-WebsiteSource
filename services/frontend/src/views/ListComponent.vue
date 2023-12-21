@@ -1,8 +1,13 @@
 <template>
-    <h1>{{ paper_title }}</h1>
-    <Button @click="value = true" type="primary">View information</Button>
-    <Drawer :closable="false" width="640" v-model="value">
-        <p class="words">{{ paper_info }}</p>
+    <p class="words">{{ paper_title }}</p>
+    <Button @click="value1 = true" type="primary">Abstract</Button>
+    <Drawer :closable="false" width="640" v-model="value1">
+        <p class="words">{{ paper_abstract }}</p>
+    </Drawer>
+    <br> <!--TODO-->
+    <Button @click="value2 = true" type="primary">Authors</Button>
+    <Drawer :closable="false" width="640" v-model="value2">
+        <p class="words">{{ paper_authors }}</p>
     </Drawer>
 </template>
 
@@ -10,23 +15,22 @@
 export default {
     data() {
         return {
-            value: false,
+            value1: false,
+            value2: false
         };
     },
     methods: {
         fetchInfo() {
-            fetch('TODO')
-                .then(response => response.json())
-                .then(data => {
-                    this.paper_title = data.paper_title;
-                    this.paper_info = data.paper_info;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            const data = this.$route.query.data;
+            const result = JSON.parse(data);
+            console.log("result is:");
+            console.log(result);
+            this.paper_title = result[0]["title"];
+            this.paper_abstract = result[0]["abstract"];
+            this.paper_authors = result[0]["author_name"];
         }
     },
-    mounted() {
+    created() {
         this.fetchInfo();
     },
 };

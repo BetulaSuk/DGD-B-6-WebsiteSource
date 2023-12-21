@@ -10,7 +10,7 @@
 .words {
     margin: 1em;
     font-family:'Courier New', Courier, monospace;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     text-align: center;
 }

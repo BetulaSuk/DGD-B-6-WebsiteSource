@@ -23,8 +23,10 @@ async def es_search(item: Item):
             es_searcher = Searcher()
             result = es_searcher.get_info_pdfdata(item.method, item.keyword)
             return JSONResponse(content=result)
-        else:
-            return
+        elif item.data_type == "arxiv_data":
+            es_searcher = Searcher()
+            result = es_searcher.get_info_arxivdata(item.method, item.keyword)
+            return JSONResponse(content=result)
     except NotFoundError:
         raise HTTPException(status_code=404,
                             detail=f"No result in {item.data_type}")

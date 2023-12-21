@@ -606,10 +606,14 @@ export default defineComponent({
 
 		...mapActions(['search_by_title']),
         async submit() {
-			console.log(this.searchText);
-            await this.search_by_title(this.searchText);
-			fetch("search")
+            const response = await this.search_by_title(this.searchText);
+			const data = await response.json();
 			
+			const jsonStr = JSON.stringify(data);
+			this.$router.push({
+				path: '/list',
+				query: { data: jsonStr }
+			});
         },
     },
 });

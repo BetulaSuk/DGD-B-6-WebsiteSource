@@ -59,16 +59,16 @@ class Searcher:
             self.es = es_instance
 
         if self.es.indices.exists(index=PDFDATA_INDEX):
-            print("<Searcher:init> pdfdata index exists")
+            print("<Searcher:init> pdfdata index exist")
             Searcher.pdfdata_index_exist = True
         if self.es.indices.exists(index=ARXIVDATA_INDEX):
-            print("<Searcher:init> arxivdata index exists")
+            print("<Searcher:init> arxivdata index exist")
             Searcher.arxivdata_index_exist = True
 
     async def setup_pdfdata_index(self, connection):
         # 避免重复创建索引
         if Searcher.pdfdata_index_exist:
-            print("<Searcher> pdfdata index exist, giveup setting pdfdata.")
+            print("<Searcher> pdfdata index exist, giveup setup pdfdata.")
             return
         # 连接数据库, 获取表单数据
         print("<Searcher> collecting data from db (pdfdata).")
@@ -78,7 +78,7 @@ class Searcher:
             )
             data_from_db = await cs.fetchall()
         # 创建索引
-        print("<Searcher> start creating pdfdata indices.")
+        print("<Searcher> start creating pdfdata index.")
         self.es.indices.create(index=PDFDATA_INDEX, body=PDFDATA_BODY)
 
         for data in data_from_db:
@@ -86,12 +86,12 @@ class Searcher:
             self.es.index(index=PDFDATA_INDEX, id=data["id"], body=temp_body)
 
         Searcher.pdfdata_index_exist = True
-        print("<Searcher> created pdfdata indices successfully.")
+        print("<Searcher> created pdfdata index successfully.")
 
     async def setup_arxivdata_index(self, connection):
         # 避免重复创建索引
         if Searcher.arxivdata_index_exist:
-            print("<Searcher> arxivdata index exists, giveup setting arxivdata.")
+            print("<Searcher> arxivdata index exist, giveup setup arxivdata.")
             return
         # 连接数据库, 获取表单数据
         print("<Searcher> collecting data from db (arxivdata).")
@@ -101,7 +101,7 @@ class Searcher:
             )
             data_from_db = await cs.fetchall()
         # 创建索引
-        print("<Searcher> start creating arxivdata indices.")
+        print("<Searcher> start creating arxivdata index.")
         self.es.indices.create(index=ARXIVDATA_INDEX, body=ARXIVDATA_BODY)
 
         for data in data_from_db:
@@ -109,7 +109,7 @@ class Searcher:
             self.es.index(index=ARXIVDATA_INDEX, id=data["id"], body=temp_body)
 
         Searcher.arxivdata_index_exist = True
-        print("<Searcher> created arxivdata indices successfully.")
+        print("<Searcher> created arxivdata index successfully.")
 
     def search_pdfdata(self, method, key: str):
         #若输入的关键词中有空格则自动进行短语查询
@@ -148,12 +148,53 @@ class Searcher:
     # 以list(dict)格式得到method:key搜索结果中的信息
     # list[i]包含"title","paper_id","link","year","abstracct","author_name","keywords","journal"等信息
     def get_info_pdfdata(self, method, key):
-        result = self.search_pdfdata(method, key)
-        if not result:
-            return []
-
+        print(f"<Searcher> pdfdata method: {method}; key: {key}")
         lst = []
         for i in self.search_pdfdata(method, key):
             lst.append(i["_source"])
+            print(f"    - {i['_source']['paper_id']}")
+
+        return lst
+
+    def search_arxivdata(self, method, key: str):
+        #若输入的关键词中有空格则自动进行短语查询
+        if " " in key:
+            match = "match_phrase"
+        else:
+            match = "match"
+
+        q = {
+            "_source": [
+                "author", "link", "abstract", "title", "paper_id", "keywords",
+                "id"
+            ],
+            "query": {
+                "script_score": {
+                    "query": {
+                        match: {
+                            method: key
+                        }
+                    },
+                    "script": {}
+                }
+            }
+        }
+        result = self.es.search(index=ARXIVDATA_INDEX, body=q)
+        if result['hits']['hits'] == []:
+            print(
+                f"<Searcher> Sorry, no match result. data type: arxivdata; method: {method}; key: {key}."
+            )
+            return ""
+        # json_print(result['hits']['hits'])
+        return result['hits']['hits']
+
+    # 以list(dict)格式得到method:key搜索结果中的信息
+    # list[i]包含"title","paper_id","link","year","abstracct","author_name","keywords","journal"等信息
+    def get_info_arxivdata(self, method, key):
+        print(f"<Searcher> arxivdata method: {method}; key: {key}")
+        lst = []
+        for i in self.search_arxivdata(method, key):
+            lst.append(i["_source"])
+            print(f"    - {i['_source']['paper_id']}")
 
         return lst
