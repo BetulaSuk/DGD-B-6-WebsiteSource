@@ -97,7 +97,7 @@ class Searcher:
         print("<Searcher> collecting data from db (arxivdata).")
         async with connection.cursor(cursor=DictCursor) as cs:
             await cs.execute(
-                'SELECT title, paper_id, link, abstract, author, keywords, id FROM pdfdata'
+                'SELECT title, paper_id, link, abstract, author, keywords, id FROM arvixdata'
             )
             data_from_db = await cs.fetchall()
         # 创建索引
@@ -165,8 +165,8 @@ class Searcher:
 
         q = {
             "_source": [
-                "author", "link", "abstract", "title", "paper_id", "keywords",
-                "id"
+                "author_name", "link", "abstract", "title", "paper_id",
+                "keywords"
             ],
             "query": {
                 "script_score": {
@@ -174,8 +174,7 @@ class Searcher:
                         match: {
                             method: key
                         }
-                    },
-                    "script": {}
+                    }
                 }
             }
         }

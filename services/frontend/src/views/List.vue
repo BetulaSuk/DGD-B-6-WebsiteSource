@@ -45,7 +45,7 @@
 
 <template>
     <div class="page_container">
-        <div ref="scroll" v-scroll="handleScroll" style="height: 600px; overflow: auto;">
+        <div ref="scroll" v-scroll="handleScroll" style="height: 660px; overflow: auto;">
             <Grid class="grid" col=4 square hover>
                 <div v-for="(paper, index) in result" :key="paper">
                     <GridItem>
@@ -75,6 +75,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -84,13 +85,15 @@ export default {
     },
     methods: {
         init() {
-            const data = this.$route.query.data;
-            this.result = JSON.parse(data);
+            const data = this.$store.state.search.data;
+            //this.result = JSON.parse(data);
+            this.result = data["data"];
+            console.log(this.result);
 
             this.valueList = [];
-            for(const i in this.result) {
-                this.valueList.push(false);
-            }
+            //for(const i in this.result) {
+            //    this.valueList.push(false);
+            //}
         },
         handleScroll(event) {
             const container = this.$refs.scroll;
@@ -100,6 +103,6 @@ export default {
     },
     mounted() {
         this.init();
-    }
+    },
 };
 </script>
