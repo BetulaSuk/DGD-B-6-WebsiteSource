@@ -1,6 +1,6 @@
 <style>
 
-.words {
+.word {
   font-family:'Courier New', Courier, monospace;
   font-size: 20px;
   font-weight: bold;
@@ -16,7 +16,7 @@
 </style>
 
 <template>
-  <section class="words">
+  <section class="word">
       <p>This site is built with FastAPI and Vue.</p>
     <p>
       <span><a href="/search">Search page</a></span>
