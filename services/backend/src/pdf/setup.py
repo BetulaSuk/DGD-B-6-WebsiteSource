@@ -26,12 +26,11 @@ def setup_pdfdata(app):
             print(
                 "<pdf setup> Table arxivdata is empty, trying to readin data..."
             )
-            await readin_arxivdata(mysql_conn)
+            #await readin_arxivdata(mysql_conn)
 
+        searcher = Searcher()
         if not Searcher.pdfdata_index_exist:
-            searcher = Searcher()
             await searcher.setup_pdfdata_index(mysql_conn)
 
         if not Searcher.arxivdata_index_exist:
-            searcher = Searcher()
             await searcher.setup_arxivdata_index(mysql_conn)

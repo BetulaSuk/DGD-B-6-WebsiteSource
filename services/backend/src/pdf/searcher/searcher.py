@@ -1,4 +1,4 @@
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, BadRequestError
 import json
 
 from src.pdf.searcher.config import *
@@ -97,12 +97,15 @@ class Searcher:
         print("<Searcher> collecting data from db (arxivdata).")
         async with connection.cursor(cursor=DictCursor) as cs:
             await cs.execute(
-                'SELECT title, paper_id, link, abstract, author, keywords, id FROM arvixdata'
+                'SELECT title, paper_id, link, abstract, author, keywords, id FROM arxivdata'
             )
             data_from_db = await cs.fetchall()
         # 创建索引
         print("<Searcher> start creating arxivdata index.")
+        # try:
         self.es.indices.create(index=ARXIVDATA_INDEX, body=ARXIVDATA_BODY)
+        # except BadRequestError:
+        # pass
 
         for data in data_from_db:
             temp_body = create_arxivbody(data)
@@ -169,12 +172,8 @@ class Searcher:
                 "keywords"
             ],
             "query": {
-                "script_score": {
-                    "query": {
-                        match: {
-                            method: key
-                        }
-                    }
+                match: {
+                    method: key
                 }
             }
         }

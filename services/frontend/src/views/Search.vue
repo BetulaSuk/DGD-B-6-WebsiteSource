@@ -504,6 +504,15 @@ a,
 	transition-timing-function: cubic-bezier(0.4, 1, 0.3, 1);
 }
 
+/*选择搜索方式的部分*/
+.method {
+	margin: 1em;
+	font-size: 28px;
+	text-align: left;
+	font-weight: bold;
+}
+
+
 @media screen and (max-width: 40em) {
 	.btn--search-close {
 		font-size: 1.25em;
@@ -566,11 +575,24 @@ a,
 				<!--这里一定要加上onsubmit，不然form内部的input默认回车触发提交和刷新-->
 				<form ref="formRef" class="search__form" action="" onsubmit="return false;">
 					<input ref="inputRef" v-model="searchText" id="test" class="search__input" name="search" type="text" placeholder="Find..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" >
-						
 					<!--没有这个隐形的button，无法触发回车判定-->
 					<button @click="submit" id="search__button" class="btn" type="submit"></button>
 
-					<span ref="historyRef" id="history" class="search__info">History: </span>
+					<div class="method">
+						<Dropdown trigger="click">
+        					<a href="javascript:void(0)">
+            					{{ searchMethod }}
+            					<Icon type="ios-arrow-down" style="color: #5c32f2;"></Icon>
+        					</a>
+        					<template #list>
+           						<DropdownMenu>
+                					<DropdownItem @click="searchMethod = 'title'">Title</DropdownItem>
+                					<DropdownItem @click="searchMethod = 'year'">Year</DropdownItem>
+                					<DropdownItem @click="searchMethod = 'author_name'">Author name</DropdownItem>
+            					</DropdownMenu>
+        					</template>
+    					</Dropdown>
+					</div>
 				</form>
 			</div><!-- /search -->
 		</div><!-- /page -->
@@ -588,6 +610,7 @@ export default defineComponent({
     data() {
         return {
             searchText: '',
+			searchMethod: 'title',
         };
     },
     methods: {
@@ -606,15 +629,9 @@ export default defineComponent({
 
 		...mapActions(['search_by_title']),
         async submit() {
-			/*
-            const response = await this.search_by_title(this.searchText);
-			const data = await response.json();
-			
-			const jsonStr = JSON.stringify(data);
-			console.log(jsonStr);
-			useStore().commit('setData', jsonStr);
-			*/
-			await this.search_by_title(this.searchText);
+			console.log(this.searchText);
+			console.log(this.searchMethod);
+			await this.search_by_title(this.searchMethod, this.searchText);
 			this.$router.push('/list');
         },
     },
