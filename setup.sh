@@ -1,5 +1,10 @@
 #!/bin/bash
 
+mkdir ./services/backend/migrations
+mkdir ./services/elasticsearch/data
+mkdir ./services/elasticsearch/logs
+mkdir ./services/mysql/data
+
 docker-compose up -d --build
 
 sleep 3s
