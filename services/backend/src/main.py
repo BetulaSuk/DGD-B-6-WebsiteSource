@@ -26,10 +26,8 @@ app.include_router(search.router)
 
 from src.database.register import register_tortoise
 from src.database.config import TORTOISE_ORM
-from src.pdf.setup import setup_pdfdata
 
 register_tortoise(app, config=TORTOISE_ORM, generate_schemas=False)
-setup_pdfdata(app)
 
 
 @app.get("/")

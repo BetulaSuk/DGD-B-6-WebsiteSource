@@ -2,7 +2,7 @@ from asyncmy.cursors import DictCursor
 
 import json
 
-PDF_METADATA_PATH = "./data/100_PDF_MetaData.json"
+PDF_METADATA_PATH = "./services/backend/data/100_PDF_MetaData.json"
 
 
 async def replace_pdfdata(connection, pdfdata_lst) -> None:
@@ -30,16 +30,6 @@ async def replace_pdfdata(connection, pdfdata_lst) -> None:
     await connection.commit()
 
 
-async def check_pdfdata(connection) -> bool:
-    async with connection.cursor(cursor=DictCursor) as cs:
-        await cs.execute('SELECT EXISTS(SELECT 1 FROM pdfdata);')
-        is_exist = await cs.fetchone()
-        if (is_exist == 1):
-            return True
-        else:
-            return False
-
-
 async def readin_pdfdata(connection) -> None:
     with open(PDF_METADATA_PATH, encoding='utf8') as metadata_file:
         data = json.load(metadata_file)
@@ -65,4 +55,4 @@ async def readin_pdfdata(connection) -> None:
             sub_lst.append(str(sub_data['keywords']))
             data_lst.append(sub_lst)
     await replace_pdfdata(connection, data_lst)
-    print("pdfdata reading complete!")
+    print(">>> 100 PDF metadata reading complete!")

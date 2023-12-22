@@ -1,5 +1,8 @@
 from asyncmy.cursors import DictCursor
 
+from asyncio import sleep
+from random import randint
+
 import requests
 from lxml import etree
 
@@ -19,6 +22,13 @@ TEMPLATE_DICT = {
 }
 
 
+def get_datetime(lst):
+    for i in lst:
+        if i[-1] == ')':
+            time = i[14:-12]
+            return time
+
+
 async def replace_arxivdata(connection, arxivdata_lst) -> None:
     async with connection.cursor(cursor=DictCursor) as cs:
         await cs.executemany(
@@ -35,34 +45,26 @@ async def replace_arxivdata(connection, arxivdata_lst) -> None:
     await connection.commit()
 
 
-async def check_arxivdata(connection) -> bool:
-    async with connection.cursor(cursor=DictCursor) as cs:
-        await cs.execute('SELECT EXISTS(SELECT 1 FROM arxivdata);')
-        is_exist = await cs.fetchone()
-        if (is_exist == 1):
-            return True
-        else:
-            return False
-
-
 async def readin_arxivdata(connection) -> None:
-    retry_times = 0
-    while True:
+    for retry_times in range(1, 4):
         try:
             response = requests.get(TARGET_URL, headers=HEADERS)
             tree = etree.HTML(response.text.encode('utf-8'))
             temp = tree.xpath('//a[@title="Abstract"]/@href')
             break
         except requests.exceptions.RequestException:
-            print(f"request sent to {TARGET_URL} failed, retrying...({retry_times} times)")
+            print(
+                f">>> WARN: request sent to {TARGET_URL} failed, retrying...({retry_times})"
+            )
             if retry_times >= 3:
-                print("<WARNING> give up readin arxivdata, please check your Internet settings.")
-                return
-            else:
-                continue
+                raise ConnectionError(
+                    ">>> ERROR: give up getting arxivdata, check your settings."
+                )
+
+    print(f">>> successfully get from {TARGET_URL}: {response}")
 
     result = []
-    for i in range(0, len(temp)):
+    for i in range(len(temp)):
         dic = TEMPLATE_DICT.copy()
         dic['paper_id'] = temp[i][5:]
         link = 'https://arxiv.org' + temp[i]
@@ -75,7 +77,11 @@ async def readin_arxivdata(connection) -> None:
         dic['author'] = au_temp
         ti_temp = tree.xpath('//h1[@class="title mathjax"]/text()')
         dic['title'] = ti_temp[0]
+        time_temp = tree.xpath('//div[@class="submission-history"]/text()')
+        dic['last_submit_time'] = get_datetime(time_temp)
         result.append(dic)
+        print(f">>> GET {link}")
+        await sleep(float(randint(50, 100)) / 100.0)
 
     arxivdata_lst = []
 
@@ -91,4 +97,4 @@ async def readin_arxivdata(connection) -> None:
         arxivdata_lst.append(sub_lst)
 
     await replace_arxivdata(connection, arxivdata_lst)
-    print("arxivdata reading complete!")
+    print(">>> 50 PDF metadata from arxiv reading complete!")

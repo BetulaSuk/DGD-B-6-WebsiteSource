@@ -9,7 +9,7 @@ HEADERS = {
 }
 
 
-async def download_arxiv():
+async def download_arxiv(mysql_conn):
     mysql_conn = await connect(host='localhost',
                                port=3306,
                                user='dgd',
@@ -19,19 +19,16 @@ async def download_arxiv():
     async with mysql_conn.cursor(cursor=DictCursor) as cs:
         await cs.execute('SELECT paper_id FROM arxivdata;')
         result = await cs.fetchall()
-    
-    print(result)
 
-    for i in result:
-        name = '../backend/data/static/Arxiv_PDF/' + i['paper_id'] + '.pdf'
-        url = 'https://arxiv.org/pdf/' + i['paper_id'] + '.pdf'
-        print(name)
-        print(url)
-        dowlimg = requests.get(url, headers=HEADERS)
+    result = [i['paper_id'] for i in result]
+
+    for i in range(len(result)):
+        name = '../backend/data/static/Arxiv_PDF/' + result[i] + '.pdf'
+        url = 'https://arxiv.org/pdf/' + result[i] + '.pdf'
+        print(f">>> GET[]: {url}")
+        print(f"    TO: {name}")
+        data = requests.get(url, headers=HEADERS)
         with open(name, 'wb') as f:
-            f.write(dowlimg.content)
+            f.write(data.content)
 
-
-if __name__ == '__main__':
-    from asyncio import run
-    run(download_arxiv())
+    print(">>> Download PDF from arxiv complete!")

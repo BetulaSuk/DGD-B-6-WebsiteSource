@@ -1,5 +1,6 @@
 aerich==0.7.1
 asyncmy==0.2.9
+asyncio==3.4.3
 cryptography==41.0.7
 bcrypt==4.0.1
 passlib==1.7.4
@@ -9,5 +10,6 @@ python-multipart==0.0.5
 tortoise-orm==0.19.2
 uvicorn==0.20.0
 elasticsearch==8.11.1
+aiohttp==3.9.1
 lxml==4.9.3
 requests==2.31.0
