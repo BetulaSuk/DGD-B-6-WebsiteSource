@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const state = {
-    data: null
+    data: null,
+    keyword: null
 };
 
 const getters = {
@@ -9,25 +10,30 @@ const getters = {
 };
 
 const actions = {
-    async search_by_title({dispatch}, meth, key) {
-        console.log(key);
-        console.log(meth);
+    async search_by_title({dispatch}, para) {
+        //console.log(para);
         const response = await axios.post('search', {
-                "keyword": key,
+                "keyword": para[0],
                 "data_type": "pdf_data",
-                "method": "title",
+                "method": para[1]
             });
-	    console.log(response);
+	    //console.log(response);
         await dispatch('getData', response);
     },
     async getData({commit}, response) {
-        commit('setData', response);
+        commit('setData', response); 
+    },
+    async getKeyWord({commit}, keyword) {
+        commit('setKeyWord', keyword);
     }
 };
 
 const mutations = {
     setData(state, newData) {
         state.data = newData;
+    },
+    setKeyWord(stat, newKey) {
+        state.keyword = newKey;
     }
 };
 

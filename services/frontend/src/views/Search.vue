@@ -627,11 +627,14 @@ export default defineComponent({
 			this.$refs.inputRef.value = '';
 		},
 
-		...mapActions(['search_by_title']),
+		...mapActions(['getKeyWord', 'search_by_title']),
         async submit() {
-			console.log(this.searchText);
-			console.log(this.searchMethod);
-			await this.search_by_title(this.searchMethod, this.searchText);
+			//难道js里的函数只能接收一个参数？所以合并为列表传参了...
+			const para = [];
+			para.push(this.searchText);
+			para.push(this.searchMethod);
+			await this.getKeyWord(this.searchText);
+			await this.search_by_title(para);
 			this.$router.push('/list');
         },
     },

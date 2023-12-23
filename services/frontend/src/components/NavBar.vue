@@ -9,13 +9,13 @@
           <div class="collapse navbar-collapse" id="navbarCollapse">\
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
               <li class="nav-item">
-                <router-link class="nav-link" to="/">Home</router-link>
+                <router-link class="nav-link" to="/login">Log in</router-link>
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" to="/search">Search page</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/">Whatever</router-link>
+                <router-link class="nav-link" to="/register">Register</router-link>
               </li>
             </ul>
           </div>
