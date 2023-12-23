@@ -63,8 +63,9 @@ async def readin_arxivdata(connection) -> None:
 
     print(f">>> successfully get from {TARGET_URL}: {response}")
 
+    total = len(temp)
     result = []
-    for i in range(len(temp)):
+    for i in range(total):
         dic = TEMPLATE_DICT.copy()
         dic['paper_id'] = temp[i][5:]
         link = 'https://arxiv.org' + temp[i]
@@ -80,7 +81,7 @@ async def readin_arxivdata(connection) -> None:
         time_temp = tree.xpath('//div[@class="submission-history"]/text()')
         dic['last_submit_time'] = get_datetime(time_temp)
         result.append(dic)
-        print(f">>> GET {link}")
+        print(f">>> GET[{i+1}/{total}]: {link}")
         await sleep(float(randint(50, 100)) / 100.0)
 
     arxivdata_lst = []

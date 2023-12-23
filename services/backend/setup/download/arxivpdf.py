@@ -10,12 +10,6 @@ HEADERS = {
 
 
 async def download_arxiv(mysql_conn):
-    mysql_conn = await connect(host='localhost',
-                               port=3306,
-                               user='dgd',
-                               password='dgd23825',
-                               db='dgd_db',
-                               charset='utf8')
     async with mysql_conn.cursor(cursor=DictCursor) as cs:
         await cs.execute('SELECT paper_id FROM arxivdata;')
         result = await cs.fetchall()
@@ -24,9 +18,9 @@ async def download_arxiv(mysql_conn):
 
     total = len(result)
     for i in range(total):
-        name = './services/backend/data/static/Arxiv_PDF/' + result[i] + '.pdf'
+        name = './data/static/Arxiv_PDF/' + result[i] + '.pdf'
         url = 'https://arxiv.org/pdf/' + result[i] + '.pdf'
-        print(f">>> GET[{i}/{total}]: {url}")
+        print(f">>> GET[{i+1}/{total}]: {url}")
         print(f"    TO: {name}")
         data = requests.get(url, headers=HEADERS)
         with open(name, 'wb') as f:

@@ -13,7 +13,7 @@ from es.index import setup_pdfdata_index, setup_arxivdata_index
 async def setup_db():
     for retry_times in range(1, 4):
         try:
-            conn = await connect(host='localhost',
+            conn = await connect(host='db',
                                  port=3306,
                                  user='dgd',
                                  password='dgd23825',

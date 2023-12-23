@@ -9,7 +9,7 @@ python-jose==3.3.0
 python-multipart==0.0.5
 tortoise-orm==0.19.2
 uvicorn==0.20.0
-elasticsearch==8.11.1
+elasticsearch[async]==8.11.1
 aiohttp==3.9.1
 lxml==4.9.3
 requests==2.31.0

@@ -1,5 +1,5 @@
 # es url
-ES_HOSTS = [{"scheme": "http", "host": "localhost", "port": 9200}]
+ES_HOSTS = [{"scheme": "http", "host": "elasticsearch", "port": 9200}]
 ES_AUTH = ("elastic", "es23825")
 PDFDATA_INDEX = 'pdfdata'
 ARXIVDATA_INDEX = 'arxivdata'

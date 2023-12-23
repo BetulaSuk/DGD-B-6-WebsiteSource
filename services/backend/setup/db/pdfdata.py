@@ -2,7 +2,7 @@ from asyncmy.cursors import DictCursor
 
 import json
 
-PDF_METADATA_PATH = "./services/backend/data/100_PDF_MetaData.json"
+PDF_METADATA_PATH = "./data/100_PDF_MetaData.json"
 
 
 async def replace_pdfdata(connection, pdfdata_lst) -> None:

@@ -14,4 +14,4 @@ COPY migrations .
 COPY pyproject.toml .
 
 COPY src/ .
-
+COPY setup/ .
