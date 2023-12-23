@@ -22,10 +22,11 @@ async def download_arxiv(mysql_conn):
 
     result = [i['paper_id'] for i in result]
 
-    for i in range(len(result)):
-        name = '../backend/data/static/Arxiv_PDF/' + result[i] + '.pdf'
+    total = len(result)
+    for i in range(total):
+        name = './services/backend/data/static/Arxiv_PDF/' + result[i] + '.pdf'
         url = 'https://arxiv.org/pdf/' + result[i] + '.pdf'
-        print(f">>> GET[]: {url}")
+        print(f">>> GET[{i}/{total}]: {url}")
         print(f"    TO: {name}")
         data = requests.get(url, headers=HEADERS)
         with open(name, 'wb') as f:

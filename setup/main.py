@@ -61,7 +61,7 @@ if __name__ == '__main__':
     loop.run_until_complete(db_task)
     db_conn = db_task.result()
 
-    loop.run_until_complete(
-        asyncio.gather(setup_es(db_conn), download_arxiv(db_conn)))
+    loop.run_until_complete(loop.create_task(setup_es(db_conn)))
+    loop.run_until_complete(loop.create_task(download_arxiv(db_conn)))
 
     loop.close()

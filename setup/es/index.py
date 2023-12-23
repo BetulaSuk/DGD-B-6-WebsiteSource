@@ -24,14 +24,15 @@ async def create_pdfbody(data):
     return dct
 
 
-async def create_arxivbody(data):
+def create_arxivbody(data):
     dct = {}
     dct["title"] = data["title"]
     dct["paper_id"] = data["paper_id"]
     dct["link"] = data["link"]
     dct["abstract"] = data["abstract"]
-    authorList = data["author"][1:-3].split("\"], ")
-    dct["author_name"] = authorList[1][10:].split("\", \"")
+    #修改
+    authorList = data["author"][2:-2].split('\', \'')
+    dct["author_name"] = authorList
 
     if data["keywords"] == "[]":
         dct["keywords"] = []
@@ -67,7 +68,7 @@ async def setup_arxivdata_index(es, connection):
     print("<Searcher> collecting data from db (arxivdata).")
     async with connection.cursor(cursor=DictCursor) as cs:
         await cs.execute(
-            'SELECT title, paper_id, link, abstract, author, keywords, id FROM pdfdata'
+            'SELECT title, paper_id, link, abstract, author, keywords, id FROM arxivdata'
         )
         data_from_db = await cs.fetchall()
     # 创建索引
@@ -75,10 +76,10 @@ async def setup_arxivdata_index(es, connection):
     try:
         await es.indices.create(index=ARXIVDATA_INDEX, body=ARXIVDATA_BODY)
     except BadRequestError:
-        print("<Searcher> pdfdata indices existed")
+        print("<Searcher> arxivdata indices existed")
 
     for data in data_from_db:
-        temp_body = await create_arxivbody(data)
+        temp_body = create_arxivbody(data)
         await es.index(index=ARXIVDATA_INDEX, id=data["id"], body=temp_body)
 
     print("<Searcher> created arxivdata index successfully.")

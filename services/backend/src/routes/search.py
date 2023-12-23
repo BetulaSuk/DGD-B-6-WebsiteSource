@@ -21,11 +21,11 @@ async def es_search(item: Item):
     try:
         if item.data_type == "pdf_data":
             es_searcher = Searcher()
-            result = await es_searcher.get_info_pdfdata(item.method, item.keyword)
+            result = es_searcher.get_info_pdfdata(item.method, item.keyword)
             return JSONResponse(content=result)
         elif item.data_type == "arxiv_data":
             es_searcher = Searcher()
-            result = await es_searcher.get_info_arxivdata(item.method, item.keyword)
+            result = es_searcher.get_info_arxivdata(item.method, item.keyword)
             return JSONResponse(content=result)
     except NotFoundError:
         raise HTTPException(status_code=404,

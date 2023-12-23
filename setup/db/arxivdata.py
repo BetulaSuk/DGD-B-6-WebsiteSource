@@ -97,4 +97,4 @@ async def readin_arxivdata(connection) -> None:
         arxivdata_lst.append(sub_lst)
 
     await replace_arxivdata(connection, arxivdata_lst)
-    print(">>> 50 PDF metadata from arxiv reading complete!")
+    print(">>> arxiv PDF metadata from arxiv reading complete!")
