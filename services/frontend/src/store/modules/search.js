@@ -14,10 +14,10 @@ const actions = {
         //console.log(para);
         const response = await axios.post('search', {
                 "keyword": para[0],
-                "data_type": "pdf_data",
+                "data_type": para[2],
                 "method": para[1]
             });
-	    console.log(response);
+        //console.log(response);
         await dispatch('getData', response);
     },
     async getData({commit}, response) {
@@ -32,7 +32,7 @@ const mutations = {
     setData(state, newData) {
         state.data = newData;
     },
-    setKeyWord(stat, newKey) {
+    setKeyWord(state, newKey) {
         state.keyword = newKey;
     }
 };

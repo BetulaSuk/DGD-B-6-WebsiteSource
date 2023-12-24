@@ -13,8 +13,9 @@ const app = createApp(App).use(router).use(store);
 
 axios.defaults.withCredentials = true;
 //Changed!!! also in vue.config.js
-axios.defaults.baseURL = '/proxy_url';  // the FastAPI backend
+axios.defaults.baseURL = 'http://39.105.206.55:82/';  // the FastAPI backend
 
+/*
 axios.interceptors.response.use(undefined, function (error) {
     if (error) {
       const originalRequest = error.config;
@@ -24,7 +25,8 @@ axios.interceptors.response.use(undefined, function (error) {
         return router.push('/login');
       }
     }
-  });
+});
+*/
 
 app.use(router);
 app.use(store);

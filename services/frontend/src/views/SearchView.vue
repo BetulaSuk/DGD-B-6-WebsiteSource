@@ -580,18 +580,32 @@ a,
 
 					<div class="method">
 						<Dropdown trigger="click">
-        					<a href="javascript:void(0)">
-            					{{ searchMethod }}
-            					<Icon type="ios-arrow-down" style="color: #5c32f2;"></Icon>
-        					</a>
-        					<template #list>
-           						<DropdownMenu>
-                					<DropdownItem @click="searchMethod = 'title'">Title</DropdownItem>
-                					<DropdownItem @click="searchMethod = 'year'">Year</DropdownItem>
-                					<DropdownItem @click="searchMethod = 'author_name'">Author name</DropdownItem>
-            					</DropdownMenu>
-        					</template>
-    					</Dropdown>
+							<a href="javascript:void(0)">
+								{{ searchMethod }}
+								<Icon type="ios-arrow-down" style="color: #5c32f2;"></Icon>
+							</a>
+							<template #list>
+								<DropdownMenu>
+									<DropdownItem @click="searchMethod = 'title'">Title</DropdownItem>
+									<DropdownItem @click="searchMethod = 'year'">Year</DropdownItem>
+									<DropdownItem @click="searchMethod = 'author_name'">Author name</DropdownItem>
+								</DropdownMenu>
+								</template>
+							</Dropdown>
+					</div>
+					<div class="method">
+						<Dropdown trigger="click">
+							<a href="javascript:void(0)">
+								{{ searchType }}
+								<Icon type="ios-arrow-down" style="color: #5c32f2;"></Icon>
+							</a>
+							<template #list>
+								<DropdownMenu>
+									<DropdownItem @click="searchMethod = 'pdf_data'">Title</DropdownItem>
+									<DropdownItem @click="searchMethod = 'arxiv_data'">Year</DropdownItem>
+								</DropdownMenu>
+								</template>
+							</Dropdown>
 					</div>
 				</form>
 			</div><!-- /search -->
@@ -606,11 +620,12 @@ import { defineComponent } from 'vue';
 import { mapActions } from 'vuex';
 
 export default defineComponent({
-    name: 'Search',
+    name: 'SearchView',
     data() {
         return {
             searchText: '',
 			searchMethod: 'title',
+			searchType: 'pdf_data'
         };
     },
     methods: {
@@ -633,6 +648,7 @@ export default defineComponent({
 			const para = [];
 			para.push(this.searchText);
 			para.push(this.searchMethod);
+			para.push(this.searchType);
 			await this.getKeyWord(this.searchText);
 			await this.search_by_title(para);
 			this.$router.push('/list');

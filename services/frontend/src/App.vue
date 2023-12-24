@@ -16,14 +16,12 @@
 // @ is an alias to /src
 import NavBar from '@/components/NavBar.vue'
 import GlobalFooter from '@/components/GlobalFooter.vue';
-import Search from './views/Search.vue';
 
 export default {
   components: {
     NavBar,
     GlobalFooter,
-    Search
-}
+  }
 }
 </script>
 

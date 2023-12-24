@@ -7,8 +7,8 @@ import ProfileView from '@/views/ProfileView.vue';
 import NoteView from '@/views/NoteView.vue';
 import EditNoteView from '@/views/EditNoteView.vue';
 
-import Search from '@/views/Search.vue';
-import List from '@/views/List.vue';
+import SearchView from '@/views/SearchView.vue';
+import ListView from '@/views/ListView.vue';
 import store from '@/store'; // NEW
 
 const routes = [
@@ -20,13 +20,13 @@ const routes = [
   //add
   {
     path: '/search',
-    name: 'Search',
-    component: Search
+    name: 'SearchView',
+    component: SearchView
   },
   {
     path: '/list',
-    name: 'List',
-    component: List,
+    name: 'ListView',
+    component: ListView,
   },
   //add
   {

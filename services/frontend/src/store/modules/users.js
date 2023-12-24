@@ -1,3 +1,4 @@
+import router from '@/router';
 import axios from 'axios';
 
 const state = {
@@ -18,11 +19,21 @@ const actions = {
     await dispatch('logIn', UserForm);
   },
   async logIn({dispatch}, user) {
-    await axios.post('login', user);
-    await dispatch('viewMe');
+    await axios.post('login', user)
+      .then(response => {
+        console.log(response);
+        dispatch('viewMe');
+      })
+      .catch(error => {
+        console.log('Exists error');
+        console.log(error);
+        alert('Try Again');
+      });
+    //await dispatch('viewMe');
   },
   async viewMe({commit}) {
     let {data} = await axios.get('users/whoami');
+    //console.log(data);
     await commit('setUser', data);
   },
   // eslint-disable-next-line no-empty-pattern
@@ -38,6 +49,10 @@ const actions = {
 const mutations = {
   setUser(state, username) {
     state.user = username;
+
+    //console.log('setUser succeeded');
+    router.push('/dashboard');
+
   },
   logout(state, user){
     state.user = user;

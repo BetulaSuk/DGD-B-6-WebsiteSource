@@ -107,6 +107,7 @@
 <script>
 
 export default {
+    name: 'ListView',
     data() {
         return {
             result: Array,
