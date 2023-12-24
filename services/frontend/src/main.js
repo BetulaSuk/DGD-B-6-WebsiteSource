@@ -12,7 +12,8 @@ import 'view-ui-plus/dist/styles/viewuiplus.css'
 const app = createApp(App).use(router).use(store);
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:82/';  // the FastAPI backend
+//Changed!!! also in vue.config.js
+axios.defaults.baseURL = '/proxy_url';  // the FastAPI backend
 
 axios.interceptors.response.use(undefined, function (error) {
     if (error) {

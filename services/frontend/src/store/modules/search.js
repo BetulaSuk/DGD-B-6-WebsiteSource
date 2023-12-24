@@ -17,7 +17,7 @@ const actions = {
                 "data_type": "pdf_data",
                 "method": para[1]
             });
-	    //console.log(response);
+	    console.log(response);
         await dispatch('getData', response);
     },
     async getData({commit}, response) {
