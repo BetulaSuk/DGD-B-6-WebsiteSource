@@ -46,7 +46,7 @@ async def setup_pdfdata_index(es, connection):
     print("<Searcher> collecting data from db (pdfdata).")
     async with connection.cursor(cursor=DictCursor) as cs:
         await cs.execute(
-            'SELECT title, paper_id, link, year, abstract, author, keywords, journal, id FROM pdfdata'
+            'SELECT title, paper_id, link, year, abstract, author, keywords, journal FROM pdfdata'
         )
         data_from_db = await cs.fetchall()
     # 创建索引
@@ -58,7 +58,9 @@ async def setup_pdfdata_index(es, connection):
 
     for data in data_from_db:
         temp_body = await create_pdfbody(data)
-        await es.index(index=PDFDATA_INDEX, id=data["id"], body=temp_body)
+        await es.index(index=PDFDATA_INDEX,
+                       id=data["paper_id"],
+                       body=temp_body)
 
     print("<Searcher> created pdfdata index successfully.")
 
@@ -68,7 +70,7 @@ async def setup_arxivdata_index(es, connection):
     print("<Searcher> collecting data from db (arxivdata).")
     async with connection.cursor(cursor=DictCursor) as cs:
         await cs.execute(
-            'SELECT title, paper_id, link, abstract, author, keywords, id FROM arxivdata'
+            'SELECT title, paper_id, link, abstract, author, keywords FROM arxivdata'
         )
         data_from_db = await cs.fetchall()
     # 创建索引
@@ -80,6 +82,8 @@ async def setup_arxivdata_index(es, connection):
 
     for data in data_from_db:
         temp_body = create_arxivbody(data)
-        await es.index(index=ARXIVDATA_INDEX, id=data["id"], body=temp_body)
+        await es.index(index=ARXIVDATA_INDEX,
+                       id=data["paper_id"],
+                       body=temp_body)
 
     print("<Searcher> created arxivdata index successfully.")

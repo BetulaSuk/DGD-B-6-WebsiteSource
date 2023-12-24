@@ -82,7 +82,7 @@ async def readin_arxivdata(connection) -> None:
         dic['last_submit_time'] = get_datetime(time_temp)
         result.append(dic)
         print(f">>> GET[{i+1}/{total}]: {link}")
-        await sleep(float(randint(50, 100)) / 100.0)
+        await sleep(float(randint(50, 100)) / 500.0)
 
     arxivdata_lst = []
 

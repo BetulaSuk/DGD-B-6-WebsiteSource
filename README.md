@@ -9,6 +9,7 @@ node: v20.10.0
 npm: 10.2.3
 vue3: @vue/cli 5.0.8
 docker: 24.0.5
+python >= 3.11
 ```
 
 

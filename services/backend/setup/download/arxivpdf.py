@@ -1,6 +1,5 @@
 import requests
 
-from asyncmy import connect
 from asyncmy.cursors import DictCursor
 
 HEADERS = {
