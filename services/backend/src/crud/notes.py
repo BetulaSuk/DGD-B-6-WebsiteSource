@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from tortoise.exceptions import DoesNotExist
+from tortoise.exceptions import DoesNotExist, IntegrityError
 
 from src.database.models import Notes
 from src.schemas.notes import NoteOutSchema
@@ -15,11 +15,13 @@ async def get_note(note_id) -> NoteOutSchema:
     return await NoteOutSchema.from_queryset_single(Notes.get(id=note_id))
 
 
-async def create_note(note, current_user, pdf_id) -> NoteOutSchema:
+async def create_note(note, current_user) -> NoteOutSchema:
     note_dict = note.dict(exclude_unset=True)
     note_dict["author_id"] = current_user.id
-    note_dict["pdf_id"] = pdf_id
-    note_obj = await Notes.create(**note_dict)
+    try:
+        note_obj = await Notes.create(**note_dict)
+    except IntegrityError:
+        raise HTTPException(status_code=400, detail="Wrong pdf_id")
     return await NoteOutSchema.from_tortoise_orm(note_obj)
 
 

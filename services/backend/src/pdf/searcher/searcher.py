@@ -158,15 +158,16 @@ class Searcher:
             lst.append(i["_source"])
             print(f"    - {i['_source']['paper_id']}")
 
-        #若结果大于等于5条则直接返回
+        #若结果大于等于2条则直接返回
         num_of_result = len(lst)
-        if num_of_result >= 5:
+        if num_of_result >= 2:
             return lst
 
         #若结果太少则启动模糊查询
         length = len(key)
         key_now = key
         now = 1
+        lst = []
         while len(lst) < 5 and now < length:
             for j in self.fuzzy_search_pdf(method, key_now):
                 lst.append(j["_source"])
