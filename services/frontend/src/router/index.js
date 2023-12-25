@@ -9,6 +9,7 @@ import EditNoteView from '@/views/EditNoteView.vue';
 
 import SearchView from '@/views/SearchView.vue';
 import ListView from '@/views/ListView.vue';
+import PdfView from '@/views/PdfView.vue'; //NEW
 import store from '@/store'; // NEW
 
 const routes = [
@@ -33,6 +34,13 @@ const routes = [
     path: '/register',
     name: 'RegisterView',
     component: RegisterView,
+  },
+  //Added!!!!!
+  {
+    path: '/pdf/:id',
+    name: 'PdfView',
+    component: PdfView,
+    props: true,
   },
   {
     path: '/login',

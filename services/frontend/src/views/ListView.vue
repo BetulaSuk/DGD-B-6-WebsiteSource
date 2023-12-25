@@ -95,6 +95,7 @@
                             <Button @click="valueList[index] = true" type="info" icon="md-book" style="width: 16em;">View Details</Button>
                             <div style="flex: 1"></div>
                         </div>
+                        <!--Detail Drawer-->
                         <Drawer :closable="false" width="1000" v-model="valueList[index]">
                             <p class="title2">{{ paper.title }}</p>
                             <div style="display: flex;">
@@ -116,6 +117,7 @@
                                     <Image :src="url" fit="contain" width="120px" height="80px" preview :preview-list="urlList" :initial-index="index" />
                                 </template>
                             </Space>
+                            <Button @click="toNote(result[index].paper_id)" type="info" icon="md-book" style="width: 8em;">Take Notes</Button>
                         </Drawer>
                     </GridItem>
                 </div>
@@ -146,10 +148,7 @@ export default {
 
             this.valueList = [];
             //TODO!!!!!
-            this.urlList = [
-                'http://39.105.206.55:8080/assets/bg_main.svg',
-                '../assets/logo.png'
-            ];
+            this.urlList = [];
             //for(const i in this.result) {
             //    this.valueList.push(false);
             //}
@@ -165,6 +164,12 @@ export default {
             const newText = text.replace(_reg, rep);
             return newText;
         },
+        toNote(paper_id) {
+            this.$router.push({
+                name: 'PdfView',
+                params: { id: paper_id }
+            });
+        }
     },
     mounted() {
         this.init();
