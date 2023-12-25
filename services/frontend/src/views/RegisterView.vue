@@ -36,6 +36,8 @@
             <label for="password" class="form-label">Password:</label>
             <input type="password" name="password" v-model="user.password" class="form-control" />
           </div>
+          <br />
+          <br />
           <Button @click="submit" type="success" long>SUBMIT</Button>
         </form>
       </div>
