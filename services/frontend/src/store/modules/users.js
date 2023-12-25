@@ -1,6 +1,8 @@
 import router from '@/router';
 import axios from 'axios';
 
+import { inject } from 'vue';
+
 const state = {
   user: null,
 };
@@ -53,7 +55,10 @@ const mutations = {
     state.user = username;
 
     //console.log('setUser succeeded');
-    router.push('/dashboard');
+    router.push('/dashboard')
+      .then(() => {
+        router.go(0);
+      })
 
   },
   logout(state, user){

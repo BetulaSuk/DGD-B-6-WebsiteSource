@@ -1,54 +1,48 @@
-<template>
-  <h1>
-    Dashboard
-  </h1>
-  <hr/><br/>
+<style>
 
+.title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/*
+.notes {
+  width: 80vw;
+  display: flex;
+  flex-wrap: wrap;
+}
+*/
+
+
+
+</style>
+
+<template>
   <div>
     <section>
-      <h1>Add new note</h1>
-      <hr/><br/>
+      <p class="title">My Notes</p>
 
-      <form @submit.prevent="submit">
-        <div class="mb-3">
-          <label for="title" class="form-label">Title:</label>
-          <input type="text" name="title" v-model="form.title" class="form-control" />
-        </div>
-        <div class="mb-3">
-          <label for="content" class="form-label">Content:</label>
-          <textarea
-            name="content"
-            v-model="form.content"
-            class="form-control"
-          ></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </section>
-
-    <br/><br/>
-
-    <section>
-      <h1>Notes</h1>
-      <hr/><br/>
-
-      <div v-if="notes && notes.length">
-        <div v-for="note in notes" :key="note.id" class="notes">
-          <div class="card" style="width: 18rem;">
-            <div class="card-body">
-              <ul>
-                <li><strong>Note Title:</strong> {{ note.title }}</li>
-                <li><strong>Author:</strong> {{ note.author.username }}</li>
-                <li><router-link :to="{name: 'NoteView', params:{id: note.id}}">View</router-link></li>
-              </ul>
+      <div style="display: flex;">
+        <div style="flex: 1;"></div>
+        <div ref="scroll" v-scroll="handleScroll" style="height: 70vh; overflow: auto; flex: 4;">
+          <div v-if="notes && notes.length" class="notes">
+            <div v-for="(note, index) in notes" :key="note">
+              <div class="card">
+                <div class="card-body">
+                    <p><strong>Note Title:</strong> {{ note.title }}</p>
+                    <div><strong>Author:</strong> {{ note.content }}</div>
+                    <Button type="primary" @click="viewPdf(notes[index])">View</Button>
+                </div>
+              </div>
+              <br/>
             </div>
           </div>
-          <br/>
+          <div v-else>
+            <p class="title">Nothing to see. Check back later.</p>
+          </div>
         </div>
-      </div>
-
-      <div v-else>
-        <p>Nothing to see. Check back later.</p>
+        <div style="flex: 1;"></div>
       </div>
     </section>
   </div>
@@ -75,10 +69,18 @@ export default defineComponent({
     ...mapGetters({ notes: 'stateNotes'}),
   },
   methods: {
-    ...mapActions(['createNote']),
-    async submit() {
-      await this.createNote(this.form);
+    ...mapActions(['idSet', 'titleSet', 'textSet']),
+    handleScroll(event) {
+      const container = this.$refs.scroll;
+      const deltaY = event.deltaY;
+      container.scrollTop += deltaY;
     },
+    async viewPdf(note) {
+      await this.idSet(note.pdf.paper_id);
+      await this.titleSet(note.title);
+      await this.textSet(note.content);
+      this.$router.push('/pdf');
+    }
   },
 });
 </script>

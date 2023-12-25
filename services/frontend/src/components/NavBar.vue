@@ -1,8 +1,17 @@
+<style>
+
+.logIn {
+  color: blueviolet;
+}
+
+</style>
+
+
 <template>
     <header>
       <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
-          <a class="navbar-brand" href="/">Our Website</a>
+          <a ref="brand" class="navbar-brand" href="/">Our Website</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -10,6 +19,9 @@
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
               <li class="nav-item">
                 <router-link class="nav-link" to="/search">Search</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link" to="/dashboard">Dashboard</router-link>
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" to="/login">Log in</router-link>
@@ -40,6 +52,11 @@
         this.$router.push('/login');
       }
     },
+    mounted() {
+      if (this.$store.getters.isAuthenticated) {
+        this.$refs.brand.classList.add('logIn');
+      }
+    }
   });
   </script>
   

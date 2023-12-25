@@ -79,7 +79,7 @@
                 </MenuItem>
             </Menu>
         </div>
-        <div ref="scroll" v-scroll="handleScroll" style="flex: 5; height: 660px; overflow: auto;">
+        <div ref="scroll" v-scroll="handleScroll" style="flex: 5; height: 80vh; overflow: auto;">
             <Grid class="grid" col=4 square hover>
                 <div v-for="(paper, index) in result" :key="paper">
                     <GridItem>
@@ -128,6 +128,8 @@
 
 <script>
 
+import { mapActions } from 'vuex';
+
 export default {
     name: 'ListView',
     data() {
@@ -139,6 +141,7 @@ export default {
         };
     },
     methods: {
+        ...mapActions(['idSet']),
         init() {
             const data = this.$store.state.search.data;
             this.keyword = this.$store.state.search.keyword;
@@ -164,11 +167,9 @@ export default {
             const newText = text.replace(_reg, rep);
             return newText;
         },
-        toNote(paper_id) {
-            this.$router.push({
-                name: 'PdfView',
-                params: { id: paper_id }
-            });
+        async toNote(paper_id) {
+            await this.idSet(paper_id);
+            this.$router.push('/pdf');
         }
     },
     mounted() {

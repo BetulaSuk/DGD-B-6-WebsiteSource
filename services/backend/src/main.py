@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 # enable schemas to read relationship between models
 Tortoise.init_models(["src.database.models"], "models")
 
-from src.routes import users, notes, pdf_data, search
+from src.routes import users, notes, pdf_data, search, server_status
 
 app = FastAPI()
 
@@ -24,6 +24,7 @@ app.include_router(users.router)
 app.include_router(notes.router)
 app.include_router(pdf_data.router)
 app.include_router(search.router)
+app.include_router(server_status.router)
 
 from src.database.register import register_tortoise
 from src.database.config import TORTOISE_ORM

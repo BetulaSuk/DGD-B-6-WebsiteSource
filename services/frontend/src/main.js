@@ -9,7 +9,19 @@ import store from './store';
 import ViewUIPlus from 'view-ui-plus'
 import 'view-ui-plus/dist/styles/viewuiplus.css'
 
-const app = createApp(App).use(router).use(store);
+//Added!!!!!
+import VueMarkdownEditor from '@kangc/v-md-editor';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
+import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
+import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
+
+import Prism from 'prismjs';
+
+VueMarkdownEditor.use(vuepressTheme, {
+  Prism,
+});
+
+const app = createApp(App);//.use(router).use(store);
 
 axios.defaults.withCredentials = true;
 //Changed!!! also in vue.config.js
@@ -32,5 +44,7 @@ app.use(router);
 app.use(store);
 
 app.use(ViewUIPlus);
+
+app.use(VueMarkdownEditor);
 
 app.mount("#app");

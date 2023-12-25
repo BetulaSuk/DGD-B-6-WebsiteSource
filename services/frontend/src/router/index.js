@@ -37,10 +37,10 @@ const routes = [
   },
   //Added!!!!!
   {
-    path: '/pdf/:id',
+    path: '/pdf',
     name: 'PdfView',
     component: PdfView,
-    props: true,
+    //props: true,
   },
   {
     path: '/login',

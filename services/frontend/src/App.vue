@@ -17,10 +17,20 @@
 import NavBar from '@/components/NavBar.vue'
 import GlobalFooter from '@/components/GlobalFooter.vue';
 
+
 export default {
   components: {
     NavBar,
     GlobalFooter,
+  },
+  //解决ListView界面刷新会丢失vuex数据的问题
+  created() {
+    if (sessionStorage.getItem('store')) {
+      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem("store"))))
+    }
+    window.addEventListener("beforeunload", () => {
+      sessionStorage.setItem('store', JSON.stringify(this.$store.state))
+    })
   }
 }
 </script>

@@ -226,7 +226,8 @@ class Searcher:
         now = 1
         while len(lst) < 5 and now < length:
             for j in self.fuzzy_search_arxiv(method, key_now):
-                lst.append(j["_source"])
+                if j["_source"] not in lst:
+                    lst.append(j["_source"])
                 if len(lst) >= 5:
                     break
                 print(f"    - {j['_source']['paper_id']}")
