@@ -15,6 +15,7 @@ class Notes(models.Model):
     title = fields.CharField(max_length=225)
     content = fields.TextField()
     author = fields.ForeignKeyField("models.Users", related_name="note")
+    pdf = fields.ForeignKeyField("models.PdfData", related_name="note")
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
 

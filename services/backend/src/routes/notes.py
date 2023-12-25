@@ -42,9 +42,10 @@ async def get_note(note_id: int) -> NoteOutSchema:
              dependencies=[Depends(get_current_user)])
 async def create_note(
     note: NoteInSchema,
+    pdf_id,
     current_user: UserOutSchema = Depends(get_current_user),
 ) -> NoteOutSchema:
-    return await crud.create_note(note, current_user)
+    return await crud.create_note(note, current_user, pdf_id)
 
 
 @router.patch(

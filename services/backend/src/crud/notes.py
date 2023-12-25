@@ -15,9 +15,10 @@ async def get_note(note_id) -> NoteOutSchema:
     return await NoteOutSchema.from_queryset_single(Notes.get(id=note_id))
 
 
-async def create_note(note, current_user) -> NoteOutSchema:
+async def create_note(note, current_user, pdf_id) -> NoteOutSchema:
     note_dict = note.dict(exclude_unset=True)
     note_dict["author_id"] = current_user.id
+    note_dict["pdf_id"] = pdf_id
     note_obj = await Notes.create(**note_dict)
     return await NoteOutSchema.from_tortoise_orm(note_obj)
 
