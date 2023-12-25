@@ -30,58 +30,99 @@
     <div style="flex: 1;"></div>
     <div style="flex: 4;">
       <br />
-      <br />
       <p class="label">TODO 1</p>
-      <Progress :percent="45" :stroke-width="30" status="normal" text-inside />
-      <br />
+      <Progress :percent="45" :stroke-width="20" status="normal" text-inside />
       <br />
       <p class="label">TODO 2</p>
-      <Progress :percent="80" :stroke-width="30" status="active" text-inside />
-      <br />
+      <Progress :percent="80" :stroke-width="20" status="active" text-inside />
       <br />
       <p class="label">TODO 3</p>
-      <Progress :percent="100" :stroke-width="30" text-inside />
+      <Progress :percent="100" :stroke-width="20" text-inside />
     </div>
     <div style="flex: 1;"></div>
   </div>
 
+  <!--Added!!!!!-->
+  <div style="display: flex;">
+    <div ref='country' style="height: 400px; flex: 1;"></div>
+    <div ref="continent" style="height: 400px; flex: 1;"></div>
+  </div>
 </template>
 <script>
 
+import * as echarts from "echarts";
+
 export default {
+
   data () {
     return {}
+  },
+  methods: {
+    init() {
+    //第一张图
+      var myChart = echarts.init(this.$refs['country']);
+      //指定配置
+      var option = {
+        xAxis: {
+          type: 'category',
+          data: ['China', 'UK', 'U.S.A' ,  'France', 'Australia', 'Japan', 'Brazil', 'Canada']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: [31,12,12,9,9,8,6,6],
+            type: 'bar'
+          }
+        ]
+      };
+      //显示
+      myChart.setOption(option);
+
+    //第二张图
+      var myChart = echarts.init(this.$refs['continent']);
+      //指定配置
+      var option = {
+        legend: {
+          top: 'bottom'
+        },
+        toolbox: {
+          show: false,
+          feature: {
+            mark: { show: true },
+            dataView: { show: false, readOnly: false },
+            restore: { show: false },
+            saveAsImage: { show: false }
+          }
+        },
+        series: [{
+          name: 'Continents',
+          type: 'pie',
+          radius: [50, 150],
+          center: ['50%', '50%'],
+          roseType: 'area',
+          itemStyle: {
+            borderRadius: 6
+          },
+          data: [
+            { value: 45, name: 'Asia' },
+            { value: 18, name: 'North America' },
+            { value: 1, name: 'Africa' },
+            { value: 10, name: 'Oceania' },
+            { value: 54, name: 'Europe' },
+            { value: 10, name:'South America'}
+          ]
+        }]
+      };
+      //显示
+      myChart.setOption(option);
+    }
+  },
+  mounted() {
+    this.init();
   }
 }
 
 
 </script>
-
-<!--
-<template>
-  <section>
-    <p>This site is built with FastAPI and Vue.</p>
-
-    <div v-if="isLoggedIn" id="logout">
-      <p id="logout">Click <a href="/dashboard">here</a> to view all notes.</p>
-    </div>
-    <p v-else>
-      <span><a href="/register">Register</a></span>
-      <span> or </span>
-      <span><a href="/login">Log In</a></span>
-    </p>
-  </section>
-</template>
-
-<script>
-import { defineComponent } from 'vue';
-export default defineComponent({
-  name: 'HomeView',
-  computed : {
-    isLoggedIn: function() {
-      return this.$store.getters.isAuthenticated;
-    }
-  },
-});
-</script>
--->
