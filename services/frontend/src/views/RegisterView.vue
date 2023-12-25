@@ -1,23 +1,46 @@
+<style>
+
+.title {
+  margin: 1em;
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.form-label {
+  margin: 1em;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+</style>
+
+
 <template>
   <section>
-    <h1>
-      Register
-    </h1>
-    <form @submit.prevent="submit">
-      <div class="mb-3">
-        <label for="username" class="form-label">Username:</label>
-        <input type="text" name="username" v-model="user.username" class="form-control" />
+    <div style="display: flex;">
+      <div style="flex: 1;"></div>
+      <div style="flex: 1;">
+        <p class="title">Register</p>
+        <!--<form @submit.prevent="submit">-->
+        <form>
+          <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" name="username" v-model="user.username" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="full_name" class="form-label">Full Name:</label>
+            <input type="text" name="full_name" v-model="user.full_name" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" name="password" v-model="user.password" class="form-control" />
+          </div>
+          <Button @click="submit" type="success" long>SUBMIT</Button>
+        </form>
       </div>
-      <div class="mb-3">
-        <label for="full_name" class="form-label">Full Name:</label>
-        <input type="text" name="full_name" v-model="user.full_name" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password:</label>
-        <input type="password" name="password" v-model="user.password" class="form-control" />
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+      <div style="flex: 1;"></div>
+    </div>
   </section>
 </template>
 

@@ -14,7 +14,7 @@
     text-align: center;
 }
 
-.title {
+.title1 {
     font-size: 16px;
     /*font-weight: bold;*/
     text-align: center;
@@ -28,6 +28,14 @@
     -webkit-box-orient: vertical;
 }
 
+.title2 {
+    margin: 1em;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #464c5b;
+}
+
 .year {
     font-size: 16px;
     text-align: center;
@@ -36,13 +44,13 @@
 
 .author {
     margin: 2em;
-    color: #657180;
+    color: #464c5b;
     font-size: 14px;
 }
 
 .abstract {
     margin: 2em;
-    color: #0e73ed;
+    color: #464c5b;
     font-size: 14px;
 }
 
@@ -76,7 +84,7 @@
                 <div v-for="(paper, index) in result" :key="paper">
                     <GridItem>
                         <Divider style="color: #2db7f5; font-weight: bold;">Title</Divider>
-                        <p class="title" v-html="highLightTitle(paper.title)"></p>
+                        <p class="title1" v-html="highLightTitle(paper.title)"></p>
 
                         <Divider style="color: #2db7f5; font-weight: bold;">Year</Divider>
                         <p class="year">{{ paper.year }}</p>
@@ -84,18 +92,30 @@
 
                         <div style="display: flex;">
                             <div style="flex: 1"></div>
-                            <Button @click="valueList[index] = true" type="info" icon="md-book" style="width: 16em;">View More</Button>
+                            <Button @click="valueList[index] = true" type="info" icon="md-book" style="width: 16em;">View Details</Button>
                             <div style="flex: 1"></div>
                         </div>
                         <Drawer :closable="false" width="1000" v-model="valueList[index]">
-                            <Divider style="font-weight: bold;">Title</Divider>
-                            <p class="title">{{ paper.title }}</p>
-                            <Divider style="font-weight: bold;">Authors</Divider>
-                            <p class="author">{{ paper.author_name }}</p>
-                            <Divider style="font-weight: bold;">Abstract</Divider>
-                            <p class="abstract">{{ paper.abstract }}</p>
+                            <p class="title2">{{ paper.title }}</p>
+                            <div style="display: flex;">
+                                <div style="flex: 1;">
+                                    <Divider style="font-weight: bold;">Authors</Divider>
+                                    <div class="author" v-for="author in paper.author_name">{{ author }}</div>
+                                </div>
+                                <div style="flex: 3;">
+                                    <Divider style="font-weight: bold;">Abstract</Divider>
+                                    <div ref="scroll" v-scroll="handleScroll" style="height: 360px; overflow: auto;">
+                                        <p class="abstract">{{ paper.abstract }}</p>
+                                    </div>
+                                </div>
+                            </div>
                             <!--TODO-->
-
+                            <Divider style="font-weight: bold;">Pictures</Divider>
+                            <Space wrap>
+                                <template v-for="(url, index) in urlList" :key="url">
+                                    <Image :src="url" fit="contain" width="120px" height="80px" preview :preview-list="urlList" :initial-index="index" />
+                                </template>
+                            </Space>
                         </Drawer>
                     </GridItem>
                 </div>
@@ -112,7 +132,8 @@ export default {
         return {
             result: Array,
             valueList: Array,
-            keyword: String
+            keyword: String,
+            urlList: Array
         };
     },
     methods: {
@@ -124,6 +145,11 @@ export default {
             //console.log(this.result);
 
             this.valueList = [];
+            //TODO!!!!!
+            this.urlList = [
+                'http://39.105.206.55:8080/assets/bg_main.svg',
+                '../assets/logo.png'
+            ];
             //for(const i in this.result) {
             //    this.valueList.push(false);
             //}

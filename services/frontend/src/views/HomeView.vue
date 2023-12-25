@@ -12,66 +12,45 @@
   font-size: large;
 }
 
+.label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
 
 </style>
 
 <template>
   <section class="word">
       <p>This site is built with FastAPI and Vue.</p>
-    <p>
-      <span><a href="/search">Search page</a></span>
-      <span> or </span>
-      <span><a href="/list">List page</a></span>
-    </p>
+      <p>Something to say</p>
   </section>
 
-  <Carousel v-model="value">
-        <CarouselItem>
-            <div class="demo-carousel">
-              <Grid center square hover>
-                <GridItem>Something1</GridItem>
-                <GridItem>Something2</GridItem>
-                <GridItem>Whatever</GridItem>
-              </Grid>
-            </div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">
-              <Grid center square hover>
-                <GridItem>Something1</GridItem>
-                <GridItem>Something2</GridItem>
-                <GridItem>Whatever</GridItem>
-              </Grid>
-            </div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">
-              <Grid center square hover>
-                <GridItem>Something1</GridItem>
-                <GridItem>Something2</GridItem>
-                <GridItem>Whatever</GridItem>
-              </Grid>
-            </div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">
-              <Grid center square hover>
-                <GridItem>Something1</GridItem>
-                <GridItem>Something2</GridItem>
-                <GridItem>Whatever</GridItem>
-              </Grid>
-            </div>
-        </CarouselItem>
-  </Carousel>
+  <div style="display: flex;">
+    <div style="flex: 1;"></div>
+    <div style="flex: 4;">
+      <br />
+      <br />
+      <p class="label">TODO 1</p>
+      <Progress :percent="45" :stroke-width="30" status="normal" text-inside />
+      <br />
+      <br />
+      <p class="label">TODO 2</p>
+      <Progress :percent="80" :stroke-width="30" status="active" text-inside />
+      <br />
+      <br />
+      <p class="label">TODO 3</p>
+      <Progress :percent="100" :stroke-width="30" text-inside />
+    </div>
+    <div style="flex: 1;"></div>
+  </div>
 
 </template>
 <script>
 
 export default {
   data () {
-    return {
-      value: 0
-    }
+    return {}
   }
 }
 

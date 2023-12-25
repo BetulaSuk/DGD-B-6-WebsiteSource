@@ -18,6 +18,7 @@ const actions = {
     UserForm.append('password', form.password);
     await dispatch('logIn', UserForm);
   },
+  //Changed!!!!!
   async logIn({dispatch}, user) {
     await axios.post('login', user)
       .then(response => {
@@ -25,9 +26,10 @@ const actions = {
         dispatch('viewMe');
       })
       .catch(error => {
-        console.log('Exists error');
-        console.log(error);
-        alert('Try Again');
+        //console.log('Exists error');
+        //console.log(error);
+        
+        alert('Incorrect username or password. Try Again');
       });
     //await dispatch('viewMe');
   },

@@ -1,20 +1,48 @@
+<style>
+
+.title {
+  margin: 1em;
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.form-label {
+  margin: 1em;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+</style>
+
+
+
+
 <template>
   <section>
-    <h1>
-      Log In
-    </h1>
-    <br/><br/>
-    <form @submit.prevent="submit">
-      <div class="mb-3">
-        <label for="username" class="form-label">Username:</label>
-        <input type="text" name="username" v-model="form.username" class="form-control" />
+    <div style="display: flex;">
+      <div style="flex: 1;"></div>
+      <div style="flex: 1;">
+        <p class="title">Log In</p>
+        <br/><br/>
+        <!--<form @submit.prevent="submit">-->
+        <form>
+          <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" name="username" v-model="form.username" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" name="password" v-model="form.password" class="form-control" />
+          </div>
+          <br />
+          <br />
+          <Button @click="submit" type="success" long>SUBMIT</Button>
+        </form>
       </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password:</label>
-        <input type="password" name="password" v-model="form.password" class="form-control" />
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+      <div style="flex: 1;"></div>
+    </div>
   </section>
 </template>
 

@@ -505,11 +505,20 @@ a,
 }
 
 /*选择搜索方式的部分*/
-.method {
+.method1 {
 	margin: 1em;
 	font-size: 28px;
 	text-align: left;
 	font-weight: bold;
+	flex: 1;
+}
+
+.method2 {
+	margin: 1em;
+	font-size: 28px;
+	text-align: left;
+	font-weight: bold;
+	flex: 3;
 }
 
 
@@ -577,35 +586,36 @@ a,
 					<input ref="inputRef" v-model="searchText" id="test" class="search__input" name="search" type="text" placeholder="Find..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" >
 					<!--没有这个隐形的button，无法触发回车判定-->
 					<button @click="submit" id="search__button" class="btn" type="submit"></button>
-
-					<div class="method">
-						<Dropdown trigger="click">
-							<a href="javascript:void(0)">
-								{{ searchMethod }}
-								<Icon type="ios-arrow-down" style="color: #5c32f2;"></Icon>
-							</a>
-							<template #list>
-								<DropdownMenu>
-									<DropdownItem @click="searchMethod = 'title'">Title</DropdownItem>
-									<DropdownItem @click="searchMethod = 'year'">Year</DropdownItem>
-									<DropdownItem @click="searchMethod = 'author_name'">Author name</DropdownItem>
-								</DropdownMenu>
-								</template>
-							</Dropdown>
-					</div>
-					<div class="method">
-						<Dropdown trigger="click">
-							<a href="javascript:void(0)">
-								{{ searchType }}
-								<Icon type="ios-arrow-down" style="color: #5c32f2;"></Icon>
-							</a>
-							<template #list>
-								<DropdownMenu>
-									<DropdownItem @click="searchMethod = 'pdf_data'">Title</DropdownItem>
-									<DropdownItem @click="searchMethod = 'arxiv_data'">Year</DropdownItem>
-								</DropdownMenu>
-								</template>
-							</Dropdown>
+					<div style="display: flex;">
+						<div class="method1">
+							<Dropdown trigger="click">
+								<a href="javascript:void(0)">
+									{{ searchType }}
+									<Icon type="ios-arrow-down" style="color: #5c32f2;"></Icon>
+								</a>
+								<template #list>
+									<DropdownMenu>
+										<DropdownItem @click="searchType = 'pdf_data'">pdf_data</DropdownItem>
+										<DropdownItem @click="searchType = 'arxiv_data'">arXiv_data</DropdownItem>
+									</DropdownMenu>
+									</template>
+								</Dropdown>
+						</div>
+						<div class="method2">
+							<Dropdown trigger="click">
+								<a href="javascript:void(0)">
+									{{ searchMethod }}
+									<Icon type="ios-arrow-down" style="color: #5c32f2;"></Icon>
+								</a>
+								<template #list>
+									<DropdownMenu>
+										<DropdownItem @click="searchMethod = 'title'">Title</DropdownItem>
+										<DropdownItem @click="searchMethod = 'year'">Year</DropdownItem>
+										<DropdownItem @click="searchMethod = 'author_name'">Author name</DropdownItem>
+									</DropdownMenu>
+									</template>
+								</Dropdown>
+						</div>
 					</div>
 				</form>
 			</div><!-- /search -->
