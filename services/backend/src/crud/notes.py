@@ -6,8 +6,9 @@ from src.schemas.notes import NoteOutSchema
 from src.schemas.token import Status  # NEW
 
 
-async def get_notes():
-    return await NoteOutSchema.from_queryset(Notes.all())
+async def get_notes(current_user):
+    usr_notes = Notes.filter(author_id=current_user.id)
+    return await NoteOutSchema.from_queryset(usr_notes)
 
 
 async def get_note(note_id) -> NoteOutSchema:
@@ -23,9 +24,11 @@ async def create_note(note, current_user) -> NoteOutSchema:
 
 async def update_note(note_id, note, current_user) -> NoteOutSchema:
     try:
-        db_note = await NoteOutSchema.from_queryset_single(Notes.get(id=note_id))
+        db_note = await NoteOutSchema.from_queryset_single(
+            Notes.get(id=note_id))
     except DoesNotExist:
-        raise HTTPException(status_code=404, detail=f"Note {note_id} not found")
+        raise HTTPException(status_code=404,
+                            detail=f"Note {note_id} not found")
 
     if db_note.author.id == current_user.id:
         await Notes.filter(id=note_id).update(**note.dict(exclude_unset=True))
@@ -36,14 +39,17 @@ async def update_note(note_id, note, current_user) -> NoteOutSchema:
 
 async def delete_note(note_id, current_user) -> Status:  # UPDATED
     try:
-        db_note = await NoteOutSchema.from_queryset_single(Notes.get(id=note_id))
+        db_note = await NoteOutSchema.from_queryset_single(
+            Notes.get(id=note_id))
     except DoesNotExist:
-        raise HTTPException(status_code=404, detail=f"Note {note_id} not found")
+        raise HTTPException(status_code=404,
+                            detail=f"Note {note_id} not found")
 
     if db_note.author.id == current_user.id:
         deleted_count = await Notes.filter(id=note_id).delete()
         if not deleted_count:
-            raise HTTPException(status_code=404, detail=f"Note {note_id} not found")
+            raise HTTPException(status_code=404,
+                                detail=f"Note {note_id} not found")
         return Status(message=f"Deleted note {note_id}")  # UPDATED
 
     raise HTTPException(status_code=403, detail=f"Not authorized to delete")

@@ -10,7 +10,6 @@ from src.schemas.notes import NoteOutSchema, NoteInSchema, UpdateNote
 from src.schemas.token import Status
 from src.schemas.users import UserOutSchema
 
-
 router = APIRouter()
 
 
@@ -19,8 +18,8 @@ router = APIRouter()
     response_model=List[NoteOutSchema],
     dependencies=[Depends(get_current_user)],
 )
-async def get_notes():
-    return await crud.get_notes()
+async def get_notes(current_user: UserOutSchema = Depends(get_current_user)):
+    return await crud.get_notes(current_user)
 
 
 @router.get(
@@ -38,11 +37,12 @@ async def get_note(note_id: int) -> NoteOutSchema:
         )
 
 
-@router.post(
-    "/notes", response_model=NoteOutSchema, dependencies=[Depends(get_current_user)]
-)
+@router.post("/notes",
+             response_model=NoteOutSchema,
+             dependencies=[Depends(get_current_user)])
 async def create_note(
-    note: NoteInSchema, current_user: UserOutSchema = Depends(get_current_user)
+    note: NoteInSchema,
+    current_user: UserOutSchema = Depends(get_current_user)
 ) -> NoteOutSchema:
     return await crud.create_note(note, current_user)
 
@@ -51,7 +51,9 @@ async def create_note(
     "/note/{note_id}",
     dependencies=[Depends(get_current_user)],
     response_model=NoteOutSchema,
-    responses={404: {"model": HTTPNotFoundError}},
+    responses={404: {
+        "model": HTTPNotFoundError
+    }},
 )
 async def update_note(
     note_id: int,
@@ -64,10 +66,11 @@ async def update_note(
 @router.delete(
     "/note/{note_id}",
     response_model=Status,
-    responses={404: {"model": HTTPNotFoundError}},
+    responses={404: {
+        "model": HTTPNotFoundError
+    }},
     dependencies=[Depends(get_current_user)],
 )
-async def delete_note(
-    note_id: int, current_user: UserOutSchema = Depends(get_current_user)
-):
+async def delete_note(note_id: int,
+                      current_user: UserOutSchema = Depends(get_current_user)):
     return await crud.delete_note(note_id, current_user)

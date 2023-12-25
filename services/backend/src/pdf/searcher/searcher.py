@@ -158,6 +158,24 @@ class Searcher:
             lst.append(i["_source"])
             print(f"    - {i['_source']['paper_id']}")
 
+        #若结果大于等于5条则直接返回
+        num_of_result = len(lst)
+        if num_of_result >= 5:
+            return lst
+
+        #若结果太少则启动模糊查询
+        length = len(key)
+        key_now = key
+        now = 1
+        while len(lst) < 5 and now < length:
+            for j in self.fuzzy_search_pdf(method, key_now):
+                lst.append(j["_source"])
+                if len(lst) >= 5:
+                    break
+                print(f"    - {j['_source']['paper_id']}")
+
+            key_now = key_now[:-1]
+            now += 1
         return lst
 
     def search_arxivdata(self, method, key: str):
@@ -196,4 +214,86 @@ class Searcher:
             lst.append(i["_source"])
             print(f"    - {i['_source']['paper_id']}")
 
+        #若结果大于等于5条则直接返回
+        num_of_result = len(lst)
+        if num_of_result >= 5:
+            return lst
+
+        #若结果太少则启动模糊查询
+        length = len(key)
+        key_now = key
+        now = 1
+        while len(lst) < 5 and now < length:
+            for j in self.fuzzy_search_arxiv(method, key_now):
+                lst.append(j["_source"])
+                if len(lst) >= 5:
+                    break
+                print(f"    - {j['_source']['paper_id']}")
+
+            key_now = key_now[:-1]
+            now += 1
         return lst
+
+    #对pdf进行模糊搜索，返回相近结果
+    def fuzzy_search_pdf(self, method, key: str):
+
+        if " " in key:
+            match = "match_phrase"
+        else:
+            match = "match"
+
+        q = {
+            "_source": [
+                "title", "paper_id", "link", "year", "abstract", "author_name",
+                "keywords", "journal"
+            ],
+            "query": {
+                match: {
+                    method: {
+                        "query": key,
+                        "fuzziness": "1"
+                    }
+                }
+            }
+        }
+
+        result = self.es.search(index=PDFDATA_INDEX, body=q)
+        # if result['hits']['hits'] == []:
+        #     print(
+        #         f"<Searcher> Sorry, no match result. data type: pdfdata; method: {method}; key: {key}."
+        #     )
+        #     return ""
+        # json_print(result['hits']['hits'])
+        return result['hits']['hits']
+
+    #对arxiv进行模糊搜索，返回相近结果
+    def fuzzy_search_arxiv(self, method, key: str):
+
+        if " " in key:
+            match = "match_phrase"
+        else:
+            match = "match"
+
+        q = {
+            "_source": [
+                "author_name", "link", "abstract", "title", "paper_id",
+                "keywords"
+            ],
+            "query": {
+                match: {
+                    method: {
+                        "query": key,
+                        "fuzziness": "1"
+                    }
+                }
+            }
+        }
+
+        result = self.es.search(index=ARXIVDATA_INDEX, body=q)
+        # if result['hits']['hits'] == []:
+        #     print(
+        #         f"<Searcher> Sorry, no match result. data type: arxivdata; method: {method}; key: {key}."
+        #     )
+        #     return ""
+        # json_print(result['hits']['hits'])
+        return result['hits']['hits']
