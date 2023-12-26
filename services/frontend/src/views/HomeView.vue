@@ -137,11 +137,7 @@ export default {
   },
   mounted() {
     this.init();
-    this.intervalId = setInterval(this.getInfo(), 5000);
   },
-  beforeDestroy() {
-    clearInterval(this.intervalId);
-  }
 }
 
 

@@ -664,5 +664,8 @@ export default defineComponent({
 			this.$router.push('/list');
         },
     },
+	mounted() {
+		setTimeout(this.change_button, 500);
+	}
 });
 </script>
