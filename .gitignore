@@ -18,6 +18,7 @@ services/backend/migrations/*
 
 # pdf files
 *.pdf
+services/backend/data/static/*
 
 # local env files
 .env.local

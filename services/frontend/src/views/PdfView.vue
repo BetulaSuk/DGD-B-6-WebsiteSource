@@ -1,25 +1,23 @@
 <style>
-
 #pdf-content {
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0%;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0%;
 }
-
 </style>
 
 
 <template>
-    <Alert v-if="showSuccess" type="success" closable @on-close="this.showSuccess=false">
+    <Alert v-if="showSuccess" type="success" closable @on-close="this.showSuccess = false">
         <p style="text-align: center;">Submit Succeeded</p>
     </Alert>
-    <Alert v-if="showError" type="error" closable @on-close="this.showError=false">
+    <Alert v-if="showError" type="error" closable @on-close="this.showError = false">
         <p style="text-align: center;">Unauthorized! Please Log In First.</p>
     </Alert>
     <div style="display: flex;">
         <div style="flex: 1; height: 90vh; padding: 0; margin: 0;">
-            <div id="pdf-content" style="padding: 0; margin: 0;" />
+            <div id="pdf-content" style="padding: 0; margin: 0;"></div>
         </div>
         <div style="flex: 1;">
             <div style="display: flex;">
@@ -55,7 +53,7 @@ export default {
             this.text = this.$store.state.pdf.text;
             this.paper_id = this.$store.state.pdf.pdf_id;
             const paper_url = "http://localhost:82/static/" + this.paper_id + ".pdf";
-            this.$nextTick(function() {
+            this.$nextTick(function () {
                 pdf.embed(paper_url, '#pdf-content')
             })
         },
@@ -81,4 +79,31 @@ export default {
         this.init();
     }
 };
+
+// 解决ERROR ResizeObserver loop completed with undelivered notifications.
+//问题的
+const debounce = (fn, delay) => {
+    let timer = null;
+    return function () {
+        let context = this;
+        let args = arguments;
+
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            fn.apply(context, args);
+        }, delay);
+    }
+}
+
+// 解决ERROR ResizeObserver loop completed with undelivered notifications.
+//问题的
+const _ResizeObserver = window.ResizeObserver;
+window.ResizeObserver = class ResizeObserver extends _ResizeObserver {
+    constructor(callback) {
+        callback = debounce(callback, 16);
+        super(callback);
+    }
+}
+
+
 </script>

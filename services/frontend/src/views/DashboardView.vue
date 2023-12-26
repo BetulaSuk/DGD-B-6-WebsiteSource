@@ -31,7 +31,7 @@
               <div class="card">
                 <div class="card-body">
                     <p><strong>Note Title:</strong> {{ note.title }}</p>
-                    <div><strong>Author:</strong> {{ note.content }}</div>
+                    <div><strong>Content:</strong> {{ note.content }}</div>
                     <Button type="primary" @click="viewPdf(notes[index])">View</Button>
                 </div>
               </div>

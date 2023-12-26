@@ -23,21 +23,21 @@
 <template>
   <section class="word">
       <p>This site is built with FastAPI and Vue.</p>
-      <p>Something to say</p>
+      <br />
   </section>
 
   <div style="display: flex;">
     <div style="flex: 1;"></div>
     <div style="flex: 4;">
       <br />
-      <p class="label">TODO 1</p>
-      <Progress :percent="45" :stroke-width="20" status="normal" text-inside />
+      <p class="label">Server CPU</p>
+      <Progress :percent="this.cpu" :stroke-width="20" status="active" text-inside></Progress>
       <br />
-      <p class="label">TODO 2</p>
-      <Progress :percent="80" :stroke-width="20" status="active" text-inside />
+      <p class="label">Server Disk</p>
+      <Progress :percent="this.disk" :stroke-width="20" status="active" text-inside></Progress>
       <br />
-      <p class="label">TODO 3</p>
-      <Progress :percent="100" :stroke-width="20" text-inside />
+      <p class="label">Server Memory</p>
+      <Progress :percent="this.memory" :stroke-width="20" status="active" text-inside></Progress>
     </div>
     <div style="flex: 1;"></div>
   </div>
@@ -52,10 +52,16 @@
 
 import * as echarts from "echarts";
 
+import axios from 'axios';
+
 export default {
 
   data () {
-    return {}
+    return {
+      cpu: 0,
+      disk: 0,
+      memory: 0
+    }
   },
   methods: {
     init() {
@@ -117,10 +123,24 @@ export default {
       };
       //显示
       myChart.setOption(option);
+      this.getInfo();
+    },
+    getInfo() {
+      axios.get('/server')
+        .then(response => {
+            //console.log(response.data);
+            this.cpu = response.data.cpu_usage;
+            this.memory = response.data.mem_usage;
+            this.disk = response.data.disk_usage;
+        });
     }
   },
   mounted() {
     this.init();
+    this.intervalId = setInterval(this.getInfo(), 5000);
+  },
+  beforeDestroy() {
+    clearInterval(this.intervalId);
   }
 }
 

@@ -62,6 +62,13 @@
     height: 8em;
 }
 
+/*TODO*/
+
+table {
+    table-layout: auto;
+    line-height: 1.2;
+}
+
 
 </style>
 
@@ -89,7 +96,7 @@
                         <Divider style="color: #2db7f5; font-weight: bold;">Year</Divider>
                         <p class="year">{{ paper.year }}</p>
                         <Divider />
-
+                        
                         <div style="display: flex;">
                             <div style="flex: 1"></div>
                             <Button @click="valueList[index] = true" type="info" icon="md-book" style="width: 16em;">View Details</Button>
@@ -111,12 +118,29 @@
                                 </div>
                             </div>
                             <!--TODO-->
+                            <Divider style="font-weight: bold;">Table</Divider>
+                            <table v-if="data.length > 0">
+                                <thead>
+                                <tr>
+                                    <!--Error 12/26-->
+                                    <th v-for="(value, key) in data[index][0]" :key="key">{{ key }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="row in data[index]">
+                                    <td v-for="(value, key) in row" :key="key">{{ value }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!--TODO-->
                             <Divider style="font-weight: bold;">Pictures</Divider>
                             <Space wrap>
-                                <template v-for="(url, index) in urlList" :key="url">
-                                    <Image :src="url" fit="contain" width="120px" height="80px" preview :preview-list="urlList" :initial-index="index" />
+                                <template v-for="(url, index) in data2" :key="url">
+                                    <Image :src="url" fit="contain" width="120px" height="80px" preview :preview-list="data2" :initial-index="index" />
                                 </template>
                             </Space>
+                            <div>
+                            </div>
                             <Button @click="toNote(result[index].paper_id)" type="info" icon="md-book" style="width: 8em;">Take Notes</Button>
                         </Drawer>
                     </GridItem>
@@ -127,8 +151,9 @@
 </template>
 
 <script>
-
+import Papa from 'papaparse';
 import { mapActions } from 'vuex';
+import axios from 'axios';
 
 export default {
     name: 'ListView',
@@ -137,7 +162,9 @@ export default {
             result: Array,
             valueList: Array,
             keyword: String,
-            urlList: Array
+            urlList: Array,
+            data: Array,
+            data2: Array
         };
     },
     methods: {
@@ -152,9 +179,17 @@ export default {
             this.valueList = [];
             //TODO!!!!!
             this.urlList = [];
-            //for(const i in this.result) {
-            //    this.valueList.push(false);
-            //}
+            this.data = [];
+            this.data2 = [];
+
+            this.result.forEach(paper => {
+                this.show(paper.paper_id);
+            });
+
+            this.result.forEach(paper => {
+                this.getPic(paper.paper_id);
+            })
+            console.log(this.data2);
         },
         handleScroll(event) {
             const container = this.$refs.scroll;
@@ -170,6 +205,34 @@ export default {
         async toNote(paper_id) {
             await this.idSet(paper_id);
             this.$router.push('/pdf');
+        },
+        async show(id) {
+            var url = 'http://localhost:82/static/100_PDF_results/'+ id + '/';
+            await axios.get('/pdf/csv/' + id)
+                .then(response => {
+                    console.log(response.data);
+                    url = url + response.data[0];
+                });
+            const response = await fetch(url);
+            const csvData = await response.text();
+            console.log(csvData);
+            Papa.parse(csvData, {
+                header: true,
+                dynamicTyping: true,
+                complete: (result) => {
+                    //console.log(result);
+                    this.data.push(result.data);
+                },
+            })
+        },
+        async getPic(id) {
+            var url = 'http://localhost:82/static/100_PDF_images/' + id + '/';
+            await axios.get('/pdf/img/' + id)
+                .then(response => {
+                    console.log(response.data);
+                    url = url + response.data[0];
+                });
+            this.data2.push(url);
         }
     },
     mounted() {
