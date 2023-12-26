@@ -17,7 +17,7 @@ async def download_arxiv(mysql_conn):
 
     total = len(result)
     for i in range(total):
-        name = './data/static/Arxiv_PDF/' + result[i] + '.pdf'
+        name = './data/static/' + result[i] + '.pdf'
         url = 'https://arxiv.org/pdf/' + result[i] + '.pdf'
         print(f">>> GET[{i+1}/{total}]: {url}")
         print(f"    TO: {name}")
