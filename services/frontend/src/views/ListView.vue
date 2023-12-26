@@ -66,7 +66,9 @@
 
 table {
     table-layout: auto;
+    /*width: 400px;*/
     line-height: 1.2;
+    text-align: center;
 }
 
 
@@ -118,12 +120,13 @@ table {
                                 </div>
                             </div>
                             <!--TODO-->
+                            <div v-if="noTable == false">
                             <Divider style="font-weight: bold;">Table</Divider>
                             <table v-if="data.length > 0">
                                 <thead>
                                 <tr>
                                     <!--Error 12/26-->
-                                    <th v-for="(value, key) in data[index][0]" :key="key">{{ key }}</th>
+                                    <th v-if="data[index]" v-for="(value, key) in data[index][0]" :key="key">{{ key }}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -132,14 +135,15 @@ table {
                                 </tr>
                                 </tbody>
                             </table>
+                            </div>
                             <!--TODO-->
+                            <div v-if="noPic == false">
                             <Divider style="font-weight: bold;">Pictures</Divider>
                             <Space wrap>
-                                <template v-for="(url, index) in data2" :key="url">
-                                    <Image :src="url" fit="contain" width="120px" height="80px" preview :preview-list="data2" :initial-index="index" />
-                                </template>
+                                    <Image :src="data2[2*index]" fit="contain" width="120px" height="80px" preview :preview-list="data2" :initial-index="2*index" />
+                                    <Image :src="data2[2*index+1]" fit="contain" width="120px" height="80px" preview :preview-list="data2" :initial-index="2*index+1" />
                             </Space>
-                            <div>
+                            <br />
                             </div>
                             <Button @click="toNote(result[index].paper_id)" type="info" icon="md-book" style="width: 8em;">Take Notes</Button>
                         </Drawer>
@@ -164,7 +168,9 @@ export default {
             keyword: String,
             urlList: Array,
             data: Array,
-            data2: Array
+            data2: Array,
+            noTable: false,
+            noPic: false,
         };
     },
     methods: {
@@ -189,7 +195,7 @@ export default {
             this.result.forEach(paper => {
                 this.getPic(paper.paper_id);
             })
-            console.log(this.data2);
+            //console.log(this.data2);
         },
         handleScroll(event) {
             const container = this.$refs.scroll;
@@ -212,6 +218,9 @@ export default {
                 .then(response => {
                     console.log(response.data);
                     url = url + response.data[0];
+                })
+                .catch(error => {
+                    this.noTable = true;
                 });
             const response = await fetch(url);
             const csvData = await response.text();
@@ -226,13 +235,19 @@ export default {
             })
         },
         async getPic(id) {
-            var url = 'http://localhost:82/static/100_PDF_images/' + id + '/';
+            var url1 = 'http://localhost:82/static/100_PDF_images/' + id + '/';
+            var url2 = 'http://localhost:82/static/100_PDF_images/' + id + '/';
             await axios.get('/pdf/img/' + id)
                 .then(response => {
                     console.log(response.data);
-                    url = url + response.data[0];
-                });
-            this.data2.push(url);
+                    url1 = url1 + response.data[0];
+                    url2 = url2 + response.data[1];
+                })
+                .catch(error => {
+                    this.noPic = true;
+                });;
+            this.data2.push(url1);
+            this.data2.push(url2);
         }
     },
     mounted() {
